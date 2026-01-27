@@ -16,10 +16,10 @@ import { ErrorState } from '@/components/common/ErrorState';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import {
-  MONO_TEXT_SM,
-  MONO_TEXT_MD,
-  MONO_TEXT_XS,
-  TERMINAL_COLORS,
+  TEXT_BODY_SM,
+  TEXT_BODY_MD,
+  TEXT_CAPTION,
+  COLORS,
   SPACING,
   RADIUS,
 } from '@/lib/theme/styleConstants';
@@ -117,7 +117,7 @@ function StrategyPageContent() {
                   letterSpacing: '-0.04em',
                   lineHeight: 1,
                   mb: 1,
-                  color: TERMINAL_COLORS.textPrimary,
+                  color: COLORS.text.primary,
                   background: 'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0.6) 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -127,8 +127,8 @@ function StrategyPageContent() {
               </Typography>
               <Typography
                 sx={{
-                  ...MONO_TEXT_SM,
-                  color: TERMINAL_COLORS.textTertiary,
+                  ...TEXT_BODY_SM,
+                  color: COLORS.text.tertiary,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                 }}
@@ -148,22 +148,22 @@ function StrategyPageContent() {
                   bgcolor: 'rgba(10,10,12,0.6)',
                   backdropFilter: 'blur(20px)',
                   border: '1px solid',
-                  borderColor: TERMINAL_COLORS.borderDefault,
+                  borderColor: COLORS.border.default,
                   borderRadius: RADIUS.sm,
                   fontFamily: '"Space Grotesk", sans-serif',
-                  color: TERMINAL_COLORS.textPrimary,
+                  color: COLORS.text.primary,
                   fontSize: '0.85rem',
                   '& .MuiOutlinedInput-notchedOutline': {
                     border: 'none',
                   },
                   '&:hover': {
-                    borderColor: TERMINAL_COLORS.lime,
+                    borderColor: COLORS.primary.main,
                   },
                   '&.Mui-focused': {
-                    borderColor: TERMINAL_COLORS.lime,
+                    borderColor: COLORS.primary.main,
                   },
                   '& .MuiSelect-icon': {
-                    color: TERMINAL_COLORS.textSecondary,
+                    color: COLORS.text.secondary,
                   }
                 }}
               >
@@ -188,7 +188,7 @@ function StrategyPageContent() {
           <Box
             sx={{
               height: '2px',
-              background: `linear-gradient(90deg, ${TERMINAL_COLORS.lime} 0%, transparent 50%)`,
+              background: `linear-gradient(90deg, ${COLORS.primary.main} 0%, transparent 50%)`,
               mt: SPACING[2],
               opacity: 0.3,
             }}
@@ -214,14 +214,14 @@ function StrategyPageContent() {
                 fontSize: '0.85rem',
                 letterSpacing: '-0.01em',
                 textTransform: 'none',
-                color: TERMINAL_COLORS.textSecondary,
+                color: COLORS.text.secondary,
                 py: SPACING[2],
                 '&.Mui-selected': {
-                  color: TERMINAL_COLORS.lime,
+                  color: COLORS.primary.main,
                 },
               },
               '& .MuiTabs-indicator': {
-                bgcolor: TERMINAL_COLORS.lime,
+                bgcolor: COLORS.primary.main,
                 height: '2px',
               }
             }}
