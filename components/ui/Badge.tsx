@@ -1,15 +1,15 @@
 'use client';
 
 import { Box, BoxProps } from '@mui/material';
-import { MONO_TEXT_XS, TERMINAL_COLORS, COLORS_EXTENDED, RADIUS, SPACING } from '@/lib/theme/styleConstants';
+import { TEXT_XS, COLORS, RADIUS, SPACING } from '@/lib/theme/styleConstants';
 
 interface BadgeProps extends BoxProps {
   /**
    * Badge color variant
-   * - default: Neutral gray
-   * - success: Green for positive states
+   * - default: Neutral slate
+   * - success: Emerald for positive states (profit)
    * - warning: Amber for warnings
-   * - error: Red/pink for errors
+   * - error: Rose for errors (loss)
    * - info: Blue for informational
    */
   variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
@@ -22,10 +22,10 @@ interface BadgeProps extends BoxProps {
 }
 
 /**
- * Terminal Lux Badge Component
+ * FinFlow Dark Badge Component
  *
- * Status badge with semantic colors for displaying tags, status, and metadata.
- * Supports multiple variants for different contexts.
+ * Modern status badge with semantic colors for tags, status, and metadata.
+ * Uses rounded corners and soft colors for a friendly fintech aesthetic.
  *
  * @example
  * ```tsx
@@ -43,49 +43,49 @@ export function Badge({
 }: BadgeProps) {
   const variants = {
     default: {
-      bgcolor: COLORS_EXTENDED.alpha.white[10],
-      color: 'rgba(255,255,255,0.8)',
-      border: `1px solid ${COLORS_EXTENDED.alpha.white[10]}`,
+      bgcolor: COLORS.background.tertiary,
+      color: COLORS.text.secondary,
+      border: `1px solid ${COLORS.border.default}`,
     },
     success: {
-      bgcolor: 'rgba(0, 255, 65, 0.1)',
-      color: TERMINAL_COLORS.lime,
-      border: '1px solid rgba(0, 255, 65, 0.3)',
+      bgcolor: COLORS.success.bg,
+      color: COLORS.success.main,
+      border: `1px solid ${COLORS.success.subtle}`,
     },
     warning: {
-      bgcolor: 'rgba(245, 158, 11, 0.1)',
-      color: COLORS_EXTENDED.status.warning,
-      border: '1px solid rgba(245, 158, 11, 0.3)',
+      bgcolor: COLORS.warning.bg,
+      color: COLORS.warning.main,
+      border: `1px solid ${COLORS.warning.subtle}`,
     },
     error: {
-      bgcolor: 'rgba(255, 0, 110, 0.1)',
-      color: TERMINAL_COLORS.pink,
-      border: '1px solid rgba(255, 0, 110, 0.3)',
+      bgcolor: COLORS.danger.bg,
+      color: COLORS.danger.main,
+      border: `1px solid ${COLORS.danger.subtle}`,
     },
     info: {
-      bgcolor: 'rgba(59, 130, 246, 0.1)',
-      color: COLORS_EXTENDED.status.info,
-      border: '1px solid rgba(59, 130, 246, 0.3)',
+      bgcolor: COLORS.info.bg,
+      color: COLORS.info.main,
+      border: `1px solid ${COLORS.info.subtle}`,
     },
   };
 
   const sizes = {
-    sm: { px: SPACING[1.5], py: SPACING[0.5] },
-    md: { px: SPACING[2], py: SPACING[1] },
+    sm: { px: SPACING[2], py: '0.375rem' },  // 8px horizontal, 6px vertical
+    md: { px: SPACING[3], py: SPACING[1] },  // 12px horizontal, 4px vertical
   };
 
   return (
     <Box
       component="span"
       sx={[
-        MONO_TEXT_XS,
+        TEXT_XS,
         {
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: RADIUS.sm,
+          borderRadius: RADIUS.md,
           whiteSpace: 'nowrap',
-          fontWeight: 700,
+          fontWeight: 600,
         },
         sizes[size],
         variants[variant],

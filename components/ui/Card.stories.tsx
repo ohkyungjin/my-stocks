@@ -160,13 +160,13 @@ export const AllVariants: Story = {
           Standard glass morphism
         </Typography>
       </Card>
-      <Card variant="dark" padding="md">
+      <Card variant="secondary" padding="md">
         <Typography sx={{ ...MONO_TEXT_SM, fontWeight: 700, mb: 1 }}>Dark</Typography>
         <Typography sx={{ ...MONO_TEXT_SM, color: TERMINAL_COLORS.textSecondary, fontSize: '0.625rem' }}>
           Darker for nesting
         </Typography>
       </Card>
-      <Card variant="light" padding="md">
+      <Card variant="highlight" padding="md">
         <Typography sx={{ ...MONO_TEXT_SM, fontWeight: 700, mb: 1 }}>Light</Typography>
         <Typography sx={{ ...MONO_TEXT_SM, color: TERMINAL_COLORS.textSecondary, fontSize: '0.625rem' }}>
           Lighter for emphasis
@@ -193,7 +193,7 @@ export const NestedCards: Story = {
       <Typography sx={{ ...MONO_TEXT_SM, fontWeight: 700, color: TERMINAL_COLORS.lime, mb: 2 }}>
         Outer Card
       </Typography>
-      <Card variant="dark" padding="md">
+      <Card variant="secondary" padding="md">
         <Typography sx={{ ...MONO_TEXT_SM, fontWeight: 700, mb: 1 }}>Nested Card</Typography>
         <Typography sx={{ ...MONO_TEXT_SM, color: TERMINAL_COLORS.textSecondary, fontSize: '0.625rem' }}>
           Dark variant works well for nested content

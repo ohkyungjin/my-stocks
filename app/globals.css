@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Global Styles - FinFlow Dark Design System */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -6,9 +6,9 @@
 }
 
 body {
-  background-color: #000000;
-  color: #FFFFFF;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #0F172A; /* slate-900 */
+  color: #F1F5F9; /* slate-100 */
+  font-family: var(--font-inter), 'Pretendard Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -46,9 +46,9 @@ body {
 
 /* Accessibility: Focus indicators for keyboard navigation */
 *:focus-visible {
-  outline: 2px solid #00FF41;
+  outline: 2px solid #8B5CF6; /* violet-500 */
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 /* Remove default focus outline only when focus-visible is supported */
@@ -56,7 +56,7 @@ body {
   outline: none;
 }
 
-/* Custom focus styles for Terminal Lux components */
+/* Custom focus styles for FinFlow Dark components */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -64,8 +64,8 @@ select:focus-visible,
 textarea:focus-visible,
 [role="button"]:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #00FF41;
+  outline: 2px solid #8B5CF6; /* violet-500 */
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
 }
 

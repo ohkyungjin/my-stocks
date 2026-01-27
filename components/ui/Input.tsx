@@ -2,7 +2,7 @@
 
 import { forwardRef } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
-import { INPUT_DEFAULT, MONO_TEXT_SM, TERMINAL_COLORS, RADIUS, SPACING } from '@/lib/theme/styleConstants';
+import { COLORS, RADIUS, SPACING } from '@/lib/theme/styleConstants';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
   /**
@@ -12,10 +12,10 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
 }
 
 /**
- * Terminal Lux Input Component
+ * FinFlow Dark Input Component
  *
- * Styled text input with Terminal Lux theme.
- * Wrapper around MUI TextField with consistent styling.
+ * Modern fintech text input with smooth focus transitions.
+ * Wrapper around MUI TextField with FinFlow Dark styling.
  *
  * @example
  * ```tsx
@@ -34,49 +34,49 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
         sx={[
           {
             '& .MuiOutlinedInput-root': {
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              letterSpacing: '0.01em',
-              bgcolor: 'rgba(255,255,255,0.03)',
-              borderRadius: RADIUS.sm,
-              color: TERMINAL_COLORS.textPrimary,
+              fontFamily: 'var(--font-inter), "Pretendard Variable", sans-serif',
+              fontSize: '0.875rem',
+              fontWeight: 400,
+              bgcolor: COLORS.background.secondary,
+              borderRadius: RADIUS.md,
+              color: COLORS.text.primary,
+              transition: 'all 0.2s ease',
               '& fieldset': {
-                borderColor: TERMINAL_COLORS.borderDefault,
+                borderColor: COLORS.border.default,
+                transition: 'border-color 0.2s ease',
               },
               '&:hover fieldset': {
-                borderColor: TERMINAL_COLORS.borderStrong,
+                borderColor: COLORS.border.strong,
               },
               '&.Mui-focused fieldset': {
-                borderColor: TERMINAL_COLORS.lime,
-                borderWidth: '1px',
+                borderColor: COLORS.primary.main,
+                borderWidth: '2px',
               },
               '&.Mui-disabled': {
                 opacity: 0.5,
+                cursor: 'not-allowed',
               },
             },
             '& .MuiInputLabel-root': {
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              letterSpacing: '0.01em',
-              color: TERMINAL_COLORS.textSecondary,
+              fontFamily: 'var(--font-inter), "Pretendard Variable", sans-serif',
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              color: COLORS.text.secondary,
               '&.Mui-focused': {
-                color: TERMINAL_COLORS.lime,
+                color: COLORS.primary.main,
               },
             },
             '& .MuiInputBase-input': {
-              padding: size === 'small' ? `${SPACING[1.5]} ${SPACING[3]}` : `${SPACING[2]} ${SPACING[3]}`,
+              padding: size === 'small' ? `${SPACING[1]} ${SPACING[3]}` : `${SPACING[2]} ${SPACING[3]}`,
               '&::placeholder': {
-                color: TERMINAL_COLORS.textTertiary,
+                color: COLORS.text.tertiary,
                 opacity: 1,
               },
             },
             '& .MuiFormHelperText-root': {
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.625rem',
-              fontWeight: 700,
-              letterSpacing: '0.01em',
+              fontFamily: 'var(--font-inter), "Pretendard Variable", sans-serif',
+              fontSize: '0.75rem',
+              fontWeight: 400,
               marginLeft: 0,
               marginTop: SPACING[1],
             },

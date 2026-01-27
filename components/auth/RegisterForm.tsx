@@ -240,7 +240,7 @@ export default function RegisterForm() {
 
         {/* Info Card */}
         <Card
-          variant="dark"
+          variant="secondary"
           padding="sm"
           sx={{ mt: 3 }}
         >

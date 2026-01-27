@@ -5,7 +5,7 @@ import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { MONO_TEXT_SM, MONO_TEXT_MD, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import { TEXT_SM, TEXT_MD, COLORS } from '@/lib/theme/styleConstants';
 
 interface ErrorStateProps {
   title?: string;
@@ -32,13 +32,14 @@ export function ErrorState({
       }}
     >
       <Card
-        variant="highlight"
+        variant="default"
         padding="lg"
         sx={{
           maxWidth: 600,
           width: '100%',
-          borderColor: TERMINAL_COLORS.error,
-          bgcolor: 'rgba(239, 68, 68, 0.05)',
+          borderColor: COLORS.danger.main,
+          bgcolor: COLORS.danger.bg,
+          border: `1px solid ${COLORS.danger.subtle}`,
         }}
       >
         {/* Error Icon Badge */}
@@ -51,11 +52,11 @@ export function ErrorState({
         {/* Error Title */}
         <Typography
           sx={{
-            ...MONO_TEXT_MD,
-            color: TERMINAL_COLORS.error,
+            ...TEXT_MD,
+            color: COLORS.danger.main,
             textAlign: 'center',
             mb: 2,
-            fontWeight: 700,
+            fontWeight: 600,
           }}
         >
           {title}
@@ -64,8 +65,8 @@ export function ErrorState({
         {/* Error Message */}
         <Typography
           sx={{
-            ...MONO_TEXT_SM,
-            color: TERMINAL_COLORS.textSecondary,
+            ...TEXT_SM,
+            color: COLORS.text.secondary,
             textAlign: 'center',
             lineHeight: 1.6,
             mb: onRetry ? 3 : 0,

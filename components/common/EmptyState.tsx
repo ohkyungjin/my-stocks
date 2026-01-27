@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
-import { MONO_TEXT_SM, MONO_TEXT_MD, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import { TEXT_SM, TEXT_MD, COLORS } from '@/lib/theme/styleConstants';
 
 interface EmptyStateProps {
   title: string;
@@ -36,13 +36,13 @@ export function EmptyState({
       }}
     >
       <Card
-        variant="dark"
+        variant="secondary"
         padding="lg"
         sx={{
           maxWidth: 600,
           width: '100%',
           border: '2px dashed',
-          borderColor: TERMINAL_COLORS.borderDefault,
+          borderColor: COLORS.border.default,
         }}
       >
         {/* Empty Icon Badge */}
@@ -55,11 +55,11 @@ export function EmptyState({
         {/* Empty Title */}
         <Typography
           sx={{
-            ...MONO_TEXT_MD,
-            color: TERMINAL_COLORS.textSecondary,
+            ...TEXT_MD,
+            color: COLORS.text.secondary,
             textAlign: 'center',
             mb: message ? 2 : action ? 3 : 0,
-            fontWeight: 700,
+            fontWeight: 600,
           }}
         >
           {title}
@@ -69,8 +69,8 @@ export function EmptyState({
         {message && (
           <Typography
             sx={{
-              ...MONO_TEXT_SM,
-              color: TERMINAL_COLORS.textTertiary,
+              ...TEXT_SM,
+              color: COLORS.text.tertiary,
               textAlign: 'center',
               lineHeight: 1.6,
               mb: action ? 3 : 0,

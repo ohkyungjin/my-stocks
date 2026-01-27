@@ -3,7 +3,7 @@
 import { Box, Typography } from '@mui/material';
 import { Skeleton } from '../ui/Skeleton';
 import { Card } from '../ui/Card';
-import { MONO_TEXT_SM, MONO_TEXT_MD, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import { TEXT_MD, COLORS } from '@/lib/theme/styleConstants';
 
 interface LoadingStateProps {
   message?: string;
@@ -75,14 +75,14 @@ export function LoadingState({
         gap: 3,
       }}
     >
-      {/* Animated Terminal Lux Spinner */}
+      {/* Animated FinFlow Dark Spinner */}
       <Box
         sx={{
           width: 48,
           height: 48,
           border: '3px solid',
-          borderColor: TERMINAL_COLORS.borderDefault,
-          borderTopColor: TERMINAL_COLORS.lime,
+          borderColor: COLORS.border.default,
+          borderTopColor: COLORS.primary.main,
           borderRadius: '50%',
           animation: 'spin 0.8s linear infinite',
           '@keyframes spin': {
@@ -93,8 +93,8 @@ export function LoadingState({
       />
       <Typography
         sx={{
-          ...MONO_TEXT_MD,
-          color: TERMINAL_COLORS.textSecondary,
+          ...TEXT_MD,
+          color: COLORS.text.secondary,
         }}
       >
         {message}

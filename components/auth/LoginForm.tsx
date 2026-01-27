@@ -184,7 +184,7 @@ export default function LoginForm() {
 
         {/* Test Account Info */}
         <Card
-          variant="dark"
+          variant="secondary"
           padding="sm"
           sx={{ mt: 3 }}
         >

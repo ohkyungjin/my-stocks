@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, keyframes } from '@mui/material';
-import { COLORS_EXTENDED, RADIUS } from '@/lib/theme/styleConstants';
+import { COLORS, RADIUS } from '@/lib/theme/styleConstants';
 
 const shimmer = keyframes`
   0% { background-position: -200% 0; }
@@ -32,10 +32,10 @@ interface SkeletonProps {
 }
 
 /**
- * Terminal Lux Skeleton Component
+ * FinFlow Dark Skeleton Component
  *
- * Loading skeleton with shimmer animation.
- * Used to indicate loading states and reduce layout shift.
+ * Loading skeleton with smooth shimmer animation.
+ * Used to indicate loading states and reduce layout shift (CLS).
  *
  * @example
  * ```tsx
@@ -54,9 +54,9 @@ export function Skeleton({
   const baseStyles = {
     background: `linear-gradient(
       90deg,
-      ${COLORS_EXTENDED.alpha.white[5]} 25%,
-      ${COLORS_EXTENDED.alpha.white[10]} 50%,
-      ${COLORS_EXTENDED.alpha.white[5]} 75%
+      ${COLORS.background.secondary} 25%,
+      ${COLORS.background.tertiary} 50%,
+      ${COLORS.background.secondary} 75%
     )`,
     backgroundSize: '200% 100%',
     animation: `${shimmer} 1.5s infinite`,

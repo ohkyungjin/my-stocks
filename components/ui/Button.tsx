@@ -2,15 +2,15 @@
 
 import { forwardRef } from 'react';
 import { Button as MuiButton, ButtonProps as MuiButtonProps, CircularProgress } from '@mui/material';
-import { BUTTON_PRIMARY, BUTTON_SECONDARY, BUTTON_DANGER, TERMINAL_COLORS, RADIUS } from '@/lib/theme/styleConstants';
+import { BUTTON_PRIMARY, BUTTON_SECONDARY, BUTTON_GHOST, BUTTON_DANGER, COLORS } from '@/lib/theme/styleConstants';
 
 interface ButtonProps extends Omit<MuiButtonProps, 'variant'> {
   /**
    * Button style variant
-   * - primary: Lime green, high emphasis
-   * - secondary: Subtle with border, medium emphasis
+   * - primary: Purple gradient, high emphasis
+   * - secondary: Teal outline, medium emphasis
    * - ghost: Transparent, low emphasis
-   * - danger: Pink/red, destructive actions
+   * - danger: Rose solid, destructive actions
    */
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
   /**
@@ -28,9 +28,9 @@ interface ButtonProps extends Omit<MuiButtonProps, 'variant'> {
 }
 
 /**
- * Terminal Lux Button Component
+ * FinFlow Dark Button Component
  *
- * Wrapper around MUI Button with Terminal Lux design tokens.
+ * Modern fintech button with soft shadows and smooth interactions.
  * Supports loading states, icons, and accessibility features.
  *
  * @example
@@ -45,14 +45,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantStyles = {
       primary: BUTTON_PRIMARY,
       secondary: BUTTON_SECONDARY,
-      ghost: {
-        bgcolor: 'transparent',
-        color: 'rgba(255,255,255,0.6)',
-        '&:hover': {
-          bgcolor: 'rgba(255,255,255,0.05)',
-          color: '#FFFFFF',
-        },
-      },
+      ghost: BUTTON_GHOST,
       danger: BUTTON_DANGER,
     };
 
@@ -63,11 +56,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         sx={[
           variantStyles[variant],
           {
-            borderRadius: RADIUS.sm,
             minWidth: 'auto',
-            transition: 'all 0.2s ease',
             '&:focus-visible': {
-              outline: `2px solid ${TERMINAL_COLORS.lime}`,
+              outline: `2px solid ${COLORS.primary.main}`,
               outlineOffset: '2px',
             },
             '&:disabled': {

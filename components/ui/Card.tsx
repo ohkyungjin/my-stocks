@@ -1,17 +1,17 @@
 'use client';
 
 import { Box, BoxProps } from '@mui/material';
-import { GLASS_PAPER, GLASS_PAPER_DARK, GLASS_PAPER_LIGHT, RADIUS, SPACING, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import { CARD_PRIMARY, CARD_SECONDARY, CARD_ELEVATED, RADIUS, SPACING, COLORS } from '@/lib/theme/styleConstants';
 
 interface CardProps extends BoxProps {
   /**
    * Card style variant
-   * - default: Standard glass morphism
-   * - dark: Darker variant for nested containers
-   * - light: Lighter variant for highlighted sections
-   * - highlight: Lime-accented border for emphasis
+   * - default: Standard slate-800 surface
+   * - secondary: Lighter slate-700 variant
+   * - elevated: Elevated slate-600 with strong shadow
+   * - highlight: Purple-accented border for emphasis
    */
-  variant?: 'default' | 'dark' | 'light' | 'highlight';
+  variant?: 'default' | 'secondary' | 'elevated' | 'highlight';
   /**
    * Padding size preset
    * - none: No padding
@@ -23,16 +23,16 @@ interface CardProps extends BoxProps {
 }
 
 /**
- * Terminal Lux Card Component
+ * FinFlow Dark Card Component
  *
- * Glass morphism card with consistent Terminal Lux styling.
- * Supports multiple variants and padding sizes.
+ * Modern fintech card with soft shadows and rounded corners.
+ * Supports multiple surface levels and padding sizes.
  *
  * @example
  * ```tsx
  * <Card>Basic card content</Card>
  * <Card variant="highlight" padding="lg">Highlighted card</Card>
- * <Card variant="dark" padding="none">Dark nested card</Card>
+ * <Card variant="elevated" padding="none">Elevated card</Card>
  * ```
  */
 export function Card({
@@ -50,14 +50,14 @@ export function Card({
   };
 
   const variants = {
-    default: GLASS_PAPER,
-    dark: GLASS_PAPER_DARK,
-    light: GLASS_PAPER_LIGHT,
+    default: CARD_PRIMARY,
+    secondary: CARD_SECONDARY,
+    elevated: CARD_ELEVATED,
     highlight: {
-      bgcolor: 'rgba(0, 255, 65, 0.05)',
-      border: `1px solid rgba(0, 255, 65, 0.2)`,
-      backdropFilter: 'blur(20px)',
-      borderRadius: RADIUS.md,
+      bgcolor: COLORS.primary.subtle,
+      border: `1px solid ${COLORS.primary.main}`,
+      borderRadius: RADIUS.lg,
+      boxShadow: `0 0 0 1px ${COLORS.primary.glow}`,
     },
   };
 
