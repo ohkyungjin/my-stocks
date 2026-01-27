@@ -9,7 +9,7 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import { MONO_TEXT_SM, MONO_TEXT_XL, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import { TEXT_BODY_SM, TEXT_HEADING_LG, COLORS } from '@/lib/theme/styleConstants';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -75,7 +75,7 @@ export default function RegisterForm() {
         minHeight: '100vh',
         px: 2,
         py: 4,
-        bgcolor: TERMINAL_COLORS.bgPrimary,
+        bgcolor: COLORS.background.primary,
       }}
     >
       <Card
@@ -91,8 +91,8 @@ export default function RegisterForm() {
           <Typography
             component="h1"
             sx={{
-              ...MONO_TEXT_XL,
-              color: TERMINAL_COLORS.lime,
+              ...TEXT_HEADING_LG,
+              color: COLORS.primary.main,
               mb: 1,
             }}
           >
@@ -100,8 +100,8 @@ export default function RegisterForm() {
           </Typography>
           <Typography
             sx={{
-              ...MONO_TEXT_SM,
-              color: TERMINAL_COLORS.textSecondary,
+              ...TEXT_BODY_SM,
+              color: COLORS.text.secondary,
             }}
           >
             새로운 계정을 만들어보세요
@@ -115,7 +115,7 @@ export default function RegisterForm() {
             padding="sm"
             sx={{
               mb: 3,
-              borderColor: TERMINAL_COLORS.error,
+              borderColor: COLORS.danger.main,
               bgcolor: 'rgba(239, 68, 68, 0.1)',
             }}
           >
@@ -125,8 +125,8 @@ export default function RegisterForm() {
               </Badge>
               <Typography
                 sx={{
-                  ...MONO_TEXT_SM,
-                  color: TERMINAL_COLORS.error,
+                  ...TEXT_BODY_SM,
+                  color: COLORS.danger.main,
                   flex: 1,
                 }}
               >
@@ -217,8 +217,8 @@ export default function RegisterForm() {
         <Box sx={{ textAlign: 'center', mt: 3 }}>
           <Typography
             sx={{
-              ...MONO_TEXT_SM,
-              color: TERMINAL_COLORS.textSecondary,
+              ...TEXT_BODY_SM,
+              color: COLORS.text.secondary,
             }}
           >
             이미 계정이 있으신가요?{' '}
@@ -226,7 +226,7 @@ export default function RegisterForm() {
               component={Link}
               href="/login"
               sx={{
-                color: TERMINAL_COLORS.lime,
+                color: COLORS.primary.main,
                 textDecoration: 'none',
                 '&:hover': {
                   textDecoration: 'underline',
@@ -250,9 +250,9 @@ export default function RegisterForm() {
             </Badge>
             <Typography
               sx={{
-                ...MONO_TEXT_SM,
+                ...TEXT_BODY_SM,
                 fontSize: '0.625rem',
-                color: TERMINAL_COLORS.textTertiary,
+                color: COLORS.text.tertiary,
                 lineHeight: 1.6,
                 flex: 1,
               }}

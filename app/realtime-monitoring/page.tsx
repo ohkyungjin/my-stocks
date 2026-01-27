@@ -14,12 +14,12 @@ import { Badge } from '@/components/ui/Badge';
 import { LoadingState } from '@/components/common/LoadingState';
 import { EmptyState } from '@/components/common/EmptyState';
 import {
-  MONO_TEXT_SM,
-  MONO_TEXT_MD,
-  MONO_TEXT_LG,
-  MONO_TEXT_XL,
-  MONO_TEXT_XS,
-  TERMINAL_COLORS,
+  TEXT_BODY_SM,
+  TEXT_BODY_MD,
+  TEXT_BODY_LG,
+  TEXT_HEADING_SM,
+  TEXT_CAPTION,
+  COLORS,
   SPACING,
   RADIUS,
 } from '@/lib/theme/styleConstants';
@@ -313,7 +313,7 @@ function RealtimeMonitoringPageContent() {
                 variant="highlight"
                 padding="md"
                 sx={{
-                  borderColor: TERMINAL_COLORS.lime,
+                  borderColor: COLORS.success.main,
                   bgcolor: 'rgba(0, 255, 65, 0.02)',
                   display: 'flex',
                   flexDirection: 'column',
@@ -323,9 +323,9 @@ function RealtimeMonitoringPageContent() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
                   <Typography
                     sx={{
-                      ...MONO_TEXT_MD,
+                      ...TEXT_BODY_MD,
                       fontWeight: 800,
-                      color: TERMINAL_COLORS.lime,
+                      color: COLORS.success.main,
                     }}
                   >
                     실시간 상승
@@ -368,8 +368,8 @@ function RealtimeMonitoringPageContent() {
                     <Box sx={{ textAlign: 'center', py: 3 }}>
                       <Typography
                         sx={{
-                          ...MONO_TEXT_SM,
-                          color: TERMINAL_COLORS.textTertiary,
+                          ...TEXT_BODY_SM,
+                          color: COLORS.text.tertiary,
                         }}
                       >
                         상승 종목 없음
@@ -384,7 +384,7 @@ function RealtimeMonitoringPageContent() {
                 variant="highlight"
                 padding="md"
                 sx={{
-                  borderColor: TERMINAL_COLORS.pink,
+                  borderColor: COLORS.danger.main,
                   bgcolor: 'rgba(255, 0, 110, 0.02)',
                   display: 'flex',
                   flexDirection: 'column',
@@ -394,9 +394,9 @@ function RealtimeMonitoringPageContent() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
                   <Typography
                     sx={{
-                      ...MONO_TEXT_MD,
+                      ...TEXT_BODY_MD,
                       fontWeight: 800,
-                      color: TERMINAL_COLORS.pink,
+                      color: COLORS.danger.main,
                     }}
                   >
                     실시간 하락
@@ -439,8 +439,8 @@ function RealtimeMonitoringPageContent() {
                     <Box sx={{ textAlign: 'center', py: 3 }}>
                       <Typography
                         sx={{
-                          ...MONO_TEXT_SM,
-                          color: TERMINAL_COLORS.textTertiary,
+                          ...TEXT_BODY_SM,
+                          color: COLORS.text.tertiary,
                         }}
                       >
                         하락 종목 없음
@@ -488,16 +488,16 @@ function RealtimeMonitoringPageContent() {
                         : 'rgba(255,255,255,0.03)',
                       border: '1px solid',
                       borderColor: activeHolding
-                        ? (activeHolding.profit_loss_rate >= 0 ? TERMINAL_COLORS.lime : TERMINAL_COLORS.pink)
-                        : TERMINAL_COLORS.borderDefault,
+                        ? (activeHolding.profit_loss_rate >= 0 ? COLORS.success.main : COLORS.danger.main)
+                        : COLORS.border.default,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      ...MONO_TEXT_XL,
+                      ...TEXT_HEADING_SM,
                       fontWeight: 800,
                       color: activeHolding
-                        ? (activeHolding.profit_loss_rate >= 0 ? TERMINAL_COLORS.lime : TERMINAL_COLORS.pink)
-                        : TERMINAL_COLORS.textTertiary,
+                        ? (activeHolding.profit_loss_rate >= 0 ? COLORS.success.main : COLORS.danger.main)
+                        : COLORS.text.tertiary,
                     }}
                   >
                     {selectedSymbol ? selectedSymbol.substring(0, 2) : '?'}
@@ -505,21 +505,21 @@ function RealtimeMonitoringPageContent() {
                   <Box>
                     <Typography
                       sx={{
-                        ...MONO_TEXT_XL,
+                        ...TEXT_HEADING_SM,
                         fontSize: '1.8rem',
                         fontWeight: 800,
                         letterSpacing: '-0.03em',
                         lineHeight: 1,
                         mb: 0.5,
-                        color: TERMINAL_COLORS.textPrimary,
+                        color: COLORS.text.primary,
                       }}
                     >
                       {activeHolding ? activeHolding.symbol_name : (selectedOrder ? selectedOrder.symbol_name : selectedSymbol || '종목 선택')}
                     </Typography>
                     <Typography
                       sx={{
-                        ...MONO_TEXT_SM,
-                        color: TERMINAL_COLORS.textSecondary,
+                        ...TEXT_BODY_SM,
+                        color: COLORS.text.secondary,
                       }}
                     >
                       {selectedSymbol || '종목 없음'}
@@ -540,10 +540,10 @@ function RealtimeMonitoringPageContent() {
                     )}
                     <Typography
                       sx={{
-                        ...MONO_TEXT_XL,
+                        ...TEXT_HEADING_SM,
                         fontSize: '2.2rem',
                         fontWeight: 800,
-                        color: TERMINAL_COLORS.textPrimary,
+                        color: COLORS.text.primary,
                       }}
                     >
                       {activeHolding
@@ -557,8 +557,8 @@ function RealtimeMonitoringPageContent() {
                   </Stack>
                   <Typography
                     sx={{
-                      ...MONO_TEXT_XS,
-                      color: TERMINAL_COLORS.textTertiary,
+                      ...TEXT_CAPTION,
+                      color: COLORS.text.tertiary,
                       mt: 0.5,
                     }}
                   >
@@ -582,21 +582,21 @@ function RealtimeMonitoringPageContent() {
                       py: 0.8,
                       borderRadius: RADIUS.sm,
                       border: '1px solid',
-                      borderColor: timeframe === tf.value ? TERMINAL_COLORS.lime : TERMINAL_COLORS.borderDefault,
+                      borderColor: timeframe === tf.value ? COLORS.success.main : COLORS.border.default,
                       bgcolor: timeframe === tf.value ? 'rgba(0,255,65,0.08)' : 'transparent',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       '&:hover': {
-                        borderColor: TERMINAL_COLORS.lime,
+                        borderColor: COLORS.success.main,
                         bgcolor: 'rgba(0,255,65,0.05)',
                       }
                     }}
                   >
                     <Typography
                       sx={{
-                        ...MONO_TEXT_SM,
+                        ...TEXT_BODY_SM,
                         fontWeight: 700,
-                        color: timeframe === tf.value ? TERMINAL_COLORS.lime : TERMINAL_COLORS.textSecondary,
+                        color: timeframe === tf.value ? COLORS.success.main : COLORS.text.secondary,
                       }}
                     >
                       {tf.label}
@@ -623,8 +623,8 @@ function RealtimeMonitoringPageContent() {
                     ) : (
                       <Typography
                         sx={{
-                          ...MONO_TEXT_MD,
-                          color: TERMINAL_COLORS.textTertiary,
+                          ...TEXT_BODY_MD,
+                          color: COLORS.text.tertiary,
                         }}
                       >
                         {selectedSymbol ? '차트 데이터 없음' : '종목을 선택해주세요'}
@@ -650,9 +650,9 @@ function RealtimeMonitoringPageContent() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, flexShrink: 0 }}>
                 <Typography
                   sx={{
-                    ...MONO_TEXT_MD,
+                    ...TEXT_BODY_MD,
                     fontWeight: 800,
-                    color: TERMINAL_COLORS.textPrimary,
+                    color: COLORS.text.primary,
                   }}
                 >
                   관심종목
@@ -694,8 +694,8 @@ function RealtimeMonitoringPageContent() {
                     <Box sx={{ py: 4, textAlign: 'center' }}>
                       <Typography
                         sx={{
-                          ...MONO_TEXT_SM,
-                          color: TERMINAL_COLORS.textTertiary,
+                          ...TEXT_BODY_SM,
+                          color: COLORS.text.tertiary,
                         }}
                       >
                         예약 주문 없음

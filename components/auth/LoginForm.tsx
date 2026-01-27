@@ -9,7 +9,7 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import { MONO_TEXT_SM, MONO_TEXT_XL, TERMINAL_COLORS, SPACING } from '@/lib/theme/styleConstants';
+import { TEXT_BODY_SM, TEXT_HEADING_LG, COLORS, SPACING } from '@/lib/theme/styleConstants';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -55,7 +55,7 @@ export default function LoginForm() {
         justifyContent: 'center',
         minHeight: '100vh',
         px: 2,
-        bgcolor: TERMINAL_COLORS.bgPrimary,
+        bgcolor: COLORS.background.primary,
       }}
     >
       <Card
@@ -71,8 +71,8 @@ export default function LoginForm() {
           <Typography
             component="h1"
             sx={{
-              ...MONO_TEXT_XL,
-              color: TERMINAL_COLORS.lime,
+              ...TEXT_HEADING_LG,
+              color: COLORS.primary.main,
               mb: 1,
             }}
           >
@@ -80,8 +80,8 @@ export default function LoginForm() {
           </Typography>
           <Typography
             sx={{
-              ...MONO_TEXT_SM,
-              color: TERMINAL_COLORS.textSecondary,
+              ...TEXT_BODY_SM,
+              color: COLORS.text.secondary,
             }}
           >
             AI Trading System에 오신 것을 환영합니다
@@ -95,7 +95,7 @@ export default function LoginForm() {
             padding="sm"
             sx={{
               mb: 3,
-              borderColor: TERMINAL_COLORS.error,
+              borderColor: COLORS.danger.main,
               bgcolor: 'rgba(239, 68, 68, 0.1)',
             }}
           >
@@ -105,8 +105,8 @@ export default function LoginForm() {
               </Badge>
               <Typography
                 sx={{
-                  ...MONO_TEXT_SM,
-                  color: TERMINAL_COLORS.error,
+                  ...TEXT_BODY_SM,
+                  color: COLORS.danger.main,
                   flex: 1,
                 }}
               >
@@ -161,8 +161,8 @@ export default function LoginForm() {
         <Box sx={{ textAlign: 'center', mt: 3 }}>
           <Typography
             sx={{
-              ...MONO_TEXT_SM,
-              color: TERMINAL_COLORS.textSecondary,
+              ...TEXT_BODY_SM,
+              color: COLORS.text.secondary,
             }}
           >
             계정이 없으신가요?{' '}
@@ -170,7 +170,7 @@ export default function LoginForm() {
               component={Link}
               href="/register"
               sx={{
-                color: TERMINAL_COLORS.lime,
+                color: COLORS.primary.main,
                 textDecoration: 'none',
                 '&:hover': {
                   textDecoration: 'underline',
@@ -190,13 +190,13 @@ export default function LoginForm() {
         >
           <Typography
             sx={{
-              ...MONO_TEXT_SM,
+              ...TEXT_BODY_SM,
               fontSize: '0.625rem',
-              color: TERMINAL_COLORS.textTertiary,
+              color: COLORS.text.tertiary,
               lineHeight: 1.6,
             }}
           >
-            <Box component="span" sx={{ color: TERMINAL_COLORS.lime, fontWeight: 700 }}>
+            <Box component="span" sx={{ color: COLORS.primary.main, fontWeight: 700 }}>
               테스트 계정:
             </Box>
             <br />
