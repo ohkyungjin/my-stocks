@@ -3,6 +3,7 @@ import { IBM_Plex_Mono } from "next/font/google";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme/ThemeProvider";
+import { SkipNavigation } from "@/components/layout/SkipNavigation";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
@@ -40,6 +41,8 @@ export default function RootLayout({
         />
       </head>
       <body className={ibmPlexMono.variable}>
+        <SkipNavigation />
+
         <AppRouterCacheProvider>
           <ThemeProvider>
             {children}

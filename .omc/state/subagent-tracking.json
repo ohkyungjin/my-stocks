@@ -1,0 +1,17 @@
+{
+  "agents": [
+    {
+      "agent_id": "ad7c3e3",
+      "agent_type": "general-purpose",
+      "started_at": "2026-01-27T14:58:43.926Z",
+      "parent_mode": "none",
+      "status": "failed",
+      "completed_at": "2026-01-27T14:59:45.998Z",
+      "duration_ms": 62072
+    }
+  ],
+  "total_spawned": 1,
+  "total_completed": 0,
+  "total_failed": 1,
+  "last_updated": "2026-01-27T15:26:13.603Z"
+}

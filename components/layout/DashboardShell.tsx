@@ -39,7 +39,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
         <Header onToggleSidebar={handleToggleSidebar} />
 
         {/* Page Content - Scrollable */}
-        <Box sx={{ flexGrow: 1, p: 3, overflow: 'auto' }}>
+        <Box id="main-content" sx={{ flexGrow: 1, p: 3, overflow: 'auto' }}>
           {children}
         </Box>
 

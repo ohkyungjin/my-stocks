@@ -1,23 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import {
-  Box,
-  Typography,
-  Paper,
-  Stack,
-  Grid,
-  Chip,
-  List,
-  useTheme,
-  alpha,
-} from '@mui/material';
-import {
-  TrendingUp as TrendingUpIcon,
-  TrendingDown as TrendingDownIcon,
-  Circle as CircleIcon,
-  Lens as LensIcon,
-} from '@mui/icons-material';
+import { Box, Typography, Stack, List } from '@mui/material';
 import { DashboardShell } from '@/components/layout/DashboardShell';
 import { CandlestickChartDynamic } from '@/components/charts/ChartDynamic';
 import { PositionListItem, WatchlistItem } from '@/components/monitoring';
@@ -25,15 +9,19 @@ import { getOHLCVData } from '@/lib/api/endpoints';
 import { formatCurrency } from '@/lib/utils/formatters';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { apiClient } from '@/lib/api/client';
+import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { LoadingState } from '@/components/common/LoadingState';
+import { EmptyState } from '@/components/common/EmptyState';
 import {
-  GLASS_PAPER,
   MONO_TEXT_SM,
   MONO_TEXT_MD,
+  MONO_TEXT_LG,
+  MONO_TEXT_XL,
   MONO_TEXT_XS,
   TERMINAL_COLORS,
-  SECTION_HEADER,
-  METRIC_LABEL,
-  METRIC_VALUE,
+  SPACING,
+  RADIUS,
 } from '@/lib/theme/styleConstants';
 import type { CandlestickData } from '@/lib/types/api';
 import type {
@@ -319,16 +307,14 @@ function RealtimeMonitoringPageContent() {
 
           {/* Left - Rising & Falling */}
           <Box sx={{ width: { xs: '100%', lg: '280px' }, flexShrink: 0, height: '100%' }}>
-            <Stack spacing={2} sx={{ height: '100%' }}>
+            <Stack spacing={SPACING[2]} sx={{ height: '100%' }}>
               {/* Rising Holdings */}
-              <Paper
-                elevation={0}
+              <Card
+                variant="highlight"
+                padding="md"
                 sx={{
-                  p: 2,
-                  borderRadius: '4px',
-                  bgcolor: 'rgba(10,10,12,0.6)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(0,255,65,0.2)',
+                  borderColor: TERMINAL_COLORS.lime,
+                  bgcolor: 'rgba(0, 255, 65, 0.02)',
                   display: 'flex',
                   flexDirection: 'column',
                   height: 'calc(50% - 8px)',
@@ -337,34 +323,16 @@ function RealtimeMonitoringPageContent() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
                   <Typography
                     sx={{
-                      fontFamily: '"Space Grotesk", sans-serif',
-                      fontSize: '0.95rem',
+                      ...MONO_TEXT_MD,
                       fontWeight: 800,
                       color: TERMINAL_COLORS.lime,
                     }}
                   >
                     실시간 상승
                   </Typography>
-                  <Box
-                    sx={{
-                      px: 1,
-                      py: 0.25,
-                      borderRadius: '2px',
-                      bgcolor: 'rgba(0,255,65,0.1)',
-                      border: '1px solid rgba(0,255,65,0.3)',
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.7rem',
-                        fontWeight: 700,
-                        color: TERMINAL_COLORS.lime,
-                      }}
-                    >
-                      {risingHoldings.length}
-                    </Typography>
-                  </Box>
+                  <Badge variant="success" size="sm">
+                    {risingHoldings.length}
+                  </Badge>
                 </Box>
 
                 <Box
@@ -376,11 +344,11 @@ function RealtimeMonitoringPageContent() {
                     },
                     '&::-webkit-scrollbar-track': {
                       bgcolor: 'rgba(255,255,255,0.02)',
-                      borderRadius: '3px',
+                      borderRadius: RADIUS.sm,
                     },
                     '&::-webkit-scrollbar-thumb': {
                       bgcolor: 'rgba(0,255,65,0.2)',
-                      borderRadius: '3px',
+                      borderRadius: RADIUS.sm,
                       '&:hover': {
                         bgcolor: 'rgba(0,255,65,0.3)',
                       }
@@ -400,9 +368,8 @@ function RealtimeMonitoringPageContent() {
                     <Box sx={{ textAlign: 'center', py: 3 }}>
                       <Typography
                         sx={{
-                          fontFamily: '"JetBrains Mono", monospace',
-                          color: 'rgba(255,255,255,0.3)',
-                          fontSize: '0.75rem',
+                          ...MONO_TEXT_SM,
+                          color: TERMINAL_COLORS.textTertiary,
                         }}
                       >
                         상승 종목 없음
@@ -410,17 +377,15 @@ function RealtimeMonitoringPageContent() {
                     </Box>
                   )}
                 </Box>
-              </Paper>
+              </Card>
 
               {/* Falling Holdings */}
-              <Paper
-                elevation={0}
+              <Card
+                variant="highlight"
+                padding="md"
                 sx={{
-                  p: 2,
-                  borderRadius: '4px',
-                  bgcolor: 'rgba(10,10,12,0.6)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255,0,110,0.2)',
+                  borderColor: TERMINAL_COLORS.pink,
+                  bgcolor: 'rgba(255, 0, 110, 0.02)',
                   display: 'flex',
                   flexDirection: 'column',
                   height: 'calc(50% - 8px)',
@@ -429,34 +394,16 @@ function RealtimeMonitoringPageContent() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
                   <Typography
                     sx={{
-                      fontFamily: '"Space Grotesk", sans-serif',
-                      fontSize: '0.95rem',
+                      ...MONO_TEXT_MD,
                       fontWeight: 800,
                       color: TERMINAL_COLORS.pink,
                     }}
                   >
                     실시간 하락
                   </Typography>
-                  <Box
-                    sx={{
-                      px: 1,
-                      py: 0.25,
-                      borderRadius: '2px',
-                      bgcolor: 'rgba(255,0,110,0.1)',
-                      border: '1px solid rgba(255,0,110,0.3)',
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.7rem',
-                        fontWeight: 700,
-                        color: TERMINAL_COLORS.pink,
-                      }}
-                    >
-                      {fallingHoldings.length}
-                    </Typography>
-                  </Box>
+                  <Badge variant="error" size="sm">
+                    {fallingHoldings.length}
+                  </Badge>
                 </Box>
 
                 <Box
@@ -468,11 +415,11 @@ function RealtimeMonitoringPageContent() {
                     },
                     '&::-webkit-scrollbar-track': {
                       bgcolor: 'rgba(255,255,255,0.02)',
-                      borderRadius: '3px',
+                      borderRadius: RADIUS.sm,
                     },
                     '&::-webkit-scrollbar-thumb': {
                       bgcolor: 'rgba(255,0,110,0.2)',
-                      borderRadius: '3px',
+                      borderRadius: RADIUS.sm,
                       '&:hover': {
                         bgcolor: 'rgba(255,0,110,0.3)',
                       }
@@ -492,9 +439,8 @@ function RealtimeMonitoringPageContent() {
                     <Box sx={{ textAlign: 'center', py: 3 }}>
                       <Typography
                         sx={{
-                          fontFamily: '"JetBrains Mono", monospace',
-                          color: 'rgba(255,255,255,0.3)',
-                          fontSize: '0.75rem',
+                          ...MONO_TEXT_SM,
+                          color: TERMINAL_COLORS.textTertiary,
                         }}
                       >
                         하락 종목 없음
@@ -502,23 +448,19 @@ function RealtimeMonitoringPageContent() {
                     </Box>
                   )}
                 </Box>
-              </Paper>
+              </Card>
             </Stack>
           </Box>
 
           {/* Center - Chart Section */}
           <Box sx={{ flex: 1, height: '100%' }}>
-            <Paper
-              elevation={0}
+            <Card
+              variant="default"
+              padding="lg"
               sx={{
-                p: 3,
-                borderRadius: '4px',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                bgcolor: 'rgba(10,10,12,0.6)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255,255,255,0.06)',
                 position: 'relative',
                 overflow: 'hidden',
                 '&::before': {
@@ -534,29 +476,28 @@ function RealtimeMonitoringPageContent() {
               }}
             >
               {/* Chart Header */}
-              <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={3} sx={{ position: 'relative', zIndex: 1 }}>
-                <Stack direction="row" spacing={2} alignItems="center">
+              <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={SPACING[3]} sx={{ position: 'relative', zIndex: 1 }}>
+                <Stack direction="row" spacing={SPACING[2]} alignItems="center">
                   <Box
                     sx={{
                       width: 56,
                       height: 56,
-                      borderRadius: '4px',
+                      borderRadius: RADIUS.md,
                       background: activeHolding
                         ? `linear-gradient(135deg, ${activeHolding.profit_loss_rate >= 0 ? 'rgba(0,255,65,0.15)' : 'rgba(255,0,110,0.15)'}, transparent)`
                         : 'rgba(255,255,255,0.03)',
                       border: '1px solid',
                       borderColor: activeHolding
-                        ? (activeHolding.profit_loss_rate >= 0 ? 'rgba(0,255,65,0.3)' : 'rgba(255,0,110,0.3)')
-                        : 'rgba(255,255,255,0.06)',
+                        ? (activeHolding.profit_loss_rate >= 0 ? TERMINAL_COLORS.lime : TERMINAL_COLORS.pink)
+                        : TERMINAL_COLORS.borderDefault,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontFamily: '"JetBrains Mono", monospace',
+                      ...MONO_TEXT_XL,
                       fontWeight: 800,
-                      fontSize: '1.3rem',
                       color: activeHolding
-                        ? (activeHolding.profit_loss_rate >= 0 ? '#00FF41' : '#FF006E')
-                        : 'rgba(255,255,255,0.3)',
+                        ? (activeHolding.profit_loss_rate >= 0 ? TERMINAL_COLORS.lime : TERMINAL_COLORS.pink)
+                        : TERMINAL_COLORS.textTertiary,
                     }}
                   >
                     {selectedSymbol ? selectedSymbol.substring(0, 2) : '?'}
@@ -564,23 +505,21 @@ function RealtimeMonitoringPageContent() {
                   <Box>
                     <Typography
                       sx={{
-                        fontFamily: '"Space Grotesk", sans-serif',
+                        ...MONO_TEXT_XL,
                         fontSize: '1.8rem',
                         fontWeight: 800,
                         letterSpacing: '-0.03em',
                         lineHeight: 1,
                         mb: 0.5,
-                        color: '#FFFFFF',
+                        color: TERMINAL_COLORS.textPrimary,
                       }}
                     >
                       {activeHolding ? activeHolding.symbol_name : (selectedOrder ? selectedOrder.symbol_name : selectedSymbol || '종목 선택')}
                     </Typography>
                     <Typography
                       sx={{
-                        fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.8rem',
-                        color: 'rgba(255,255,255,0.5)',
-                        letterSpacing: '0.05em',
+                        ...MONO_TEXT_SM,
+                        color: TERMINAL_COLORS.textSecondary,
                       }}
                     >
                       {selectedSymbol || '종목 없음'}
@@ -591,36 +530,20 @@ function RealtimeMonitoringPageContent() {
                 <Stack alignItems="flex-end">
                   <Stack direction="row" alignItems="baseline" spacing={1.5}>
                     {activeHolding && (
-                      <Box
-                        sx={{
-                          px: 1.5,
-                          py: 0.5,
-                          borderRadius: '2px',
-                          bgcolor: activeHolding.profit_loss_rate >= 0 ? 'rgba(0,255,65,0.1)' : 'rgba(255,0,110,0.1)',
-                          border: '1px solid',
-                          borderColor: activeHolding.profit_loss_rate >= 0 ? 'rgba(0,255,65,0.3)' : 'rgba(255,0,110,0.3)',
-                        }}
+                      <Badge
+                        variant={activeHolding.profit_loss_rate >= 0 ? 'success' : 'error'}
+                        size="md"
+                        sx={{ fontSize: '0.9rem', fontWeight: 800 }}
                       >
-                        <Typography
-                          sx={{
-                            fontFamily: '"JetBrains Mono", monospace',
-                            fontSize: '0.9rem',
-                            fontWeight: 800,
-                            color: activeHolding.profit_loss_rate >= 0 ? '#00FF41' : '#FF006E',
-                            letterSpacing: '-0.01em',
-                          }}
-                        >
-                          {activeHolding.profit_loss_rate >= 0 ? '+' : ''}{activeHolding.profit_loss_rate.toFixed(2)}%
-                        </Typography>
-                      </Box>
+                        {activeHolding.profit_loss_rate >= 0 ? '+' : ''}{activeHolding.profit_loss_rate.toFixed(2)}%
+                      </Badge>
                     )}
                     <Typography
                       sx={{
-                        fontFamily: '"JetBrains Mono", monospace',
+                        ...MONO_TEXT_XL,
                         fontSize: '2.2rem',
                         fontWeight: 800,
-                        color: '#FFFFFF',
-                        letterSpacing: '-0.02em',
+                        color: TERMINAL_COLORS.textPrimary,
                       }}
                     >
                       {activeHolding
@@ -634,11 +557,9 @@ function RealtimeMonitoringPageContent() {
                   </Stack>
                   <Typography
                     sx={{
-                      fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: '0.7rem',
-                      color: 'rgba(255,255,255,0.4)',
+                      ...MONO_TEXT_XS,
+                      color: TERMINAL_COLORS.textTertiary,
                       mt: 0.5,
-                      letterSpacing: '0.05em',
                     }}
                   >
                     마지막 업데이트: {currentTime || '--:--:--'}
@@ -647,7 +568,7 @@ function RealtimeMonitoringPageContent() {
               </Stack>
 
               {/* Timeframe Controls */}
-              <Stack direction="row" spacing={1.5} mb={3} sx={{ position: 'relative', zIndex: 1 }}>
+              <Stack direction="row" spacing={1.5} mb={SPACING[3]} sx={{ position: 'relative', zIndex: 1 }}>
                 {[
                   { value: '90', label: '3개월' },
                   { value: '180', label: '6개월' },
@@ -659,25 +580,23 @@ function RealtimeMonitoringPageContent() {
                     sx={{
                       px: 2.5,
                       py: 0.8,
-                      borderRadius: '2px',
+                      borderRadius: RADIUS.sm,
                       border: '1px solid',
-                      borderColor: timeframe === tf.value ? '#00FF41' : 'rgba(255,255,255,0.1)',
+                      borderColor: timeframe === tf.value ? TERMINAL_COLORS.lime : TERMINAL_COLORS.borderDefault,
                       bgcolor: timeframe === tf.value ? 'rgba(0,255,65,0.08)' : 'transparent',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       '&:hover': {
-                        borderColor: '#00FF41',
+                        borderColor: TERMINAL_COLORS.lime,
                         bgcolor: 'rgba(0,255,65,0.05)',
                       }
                     }}
                   >
                     <Typography
                       sx={{
-                        fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.8rem',
+                        ...MONO_TEXT_SM,
                         fontWeight: 700,
-                        color: timeframe === tf.value ? '#00FF41' : 'rgba(255,255,255,0.55)',
-                        letterSpacing: '0.05em',
+                        color: timeframe === tf.value ? TERMINAL_COLORS.lime : TERMINAL_COLORS.textSecondary,
                       }}
                     >
                       {tf.label}
@@ -699,34 +618,30 @@ function RealtimeMonitoringPageContent() {
                   </Box>
                 ) : (
                   <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography
-                      sx={{
-                        fontFamily: '"JetBrains Mono", monospace',
-                        color: 'rgba(255,255,255,0.4)',
-                        fontSize: '0.9rem',
-                      }}
-                    >
-                      {selectedSymbol
-                        ? (isLoadingChart ? '차트 데이터 로딩 중...' : '차트 데이터 없음')
-                        : '종목을 선택해주세요'
-                      }
-                    </Typography>
+                    {isLoadingChart ? (
+                      <LoadingState message="차트 데이터 로딩 중..." variant="spinner" minHeight="100%" />
+                    ) : (
+                      <Typography
+                        sx={{
+                          ...MONO_TEXT_MD,
+                          color: TERMINAL_COLORS.textTertiary,
+                        }}
+                      >
+                        {selectedSymbol ? '차트 데이터 없음' : '종목을 선택해주세요'}
+                      </Typography>
+                    )}
                   </Box>
                 )}
               </Box>
-            </Paper>
+            </Card>
           </Box>
 
           {/* Right - Watchlist */}
           <Box sx={{ width: { xs: '100%', lg: '280px' }, flexShrink: 0, height: '100%' }}>
-            <Paper
-              elevation={0}
+            <Card
+              variant="default"
+              padding="md"
               sx={{
-                p: 2,
-                borderRadius: '4px',
-                bgcolor: 'rgba(10,10,12,0.6)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255,255,255,0.06)',
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
@@ -735,35 +650,16 @@ function RealtimeMonitoringPageContent() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, flexShrink: 0 }}>
                 <Typography
                   sx={{
-                    fontFamily: '"Space Grotesk", sans-serif',
-                    fontSize: '0.95rem',
+                    ...MONO_TEXT_MD,
                     fontWeight: 800,
-                    letterSpacing: '-0.02em',
-                    color: '#FFFFFF',
+                    color: TERMINAL_COLORS.textPrimary,
                   }}
                 >
                   관심종목
                 </Typography>
-                <Box
-                  sx={{
-                    px: 1,
-                    py: 0.25,
-                    borderRadius: '2px',
-                    bgcolor: 'rgba(0,255,65,0.1)',
-                    border: '1px solid rgba(0,255,65,0.3)',
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: '0.7rem',
-                      fontWeight: 700,
-                      color: '#00FF41',
-                    }}
-                  >
-                    {scheduledOrders.length}
-                  </Typography>
-                </Box>
+                <Badge variant="info" size="sm">
+                  {scheduledOrders.length}
+                </Badge>
               </Box>
 
               <Box
@@ -775,11 +671,11 @@ function RealtimeMonitoringPageContent() {
                   },
                   '&::-webkit-scrollbar-track': {
                     bgcolor: 'rgba(255,255,255,0.02)',
-                    borderRadius: '3px',
+                    borderRadius: RADIUS.sm,
                   },
                   '&::-webkit-scrollbar-thumb': {
                     bgcolor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '3px',
+                    borderRadius: RADIUS.sm,
                     '&:hover': {
                       bgcolor: 'rgba(255,255,255,0.2)',
                     }
@@ -798,10 +694,8 @@ function RealtimeMonitoringPageContent() {
                     <Box sx={{ py: 4, textAlign: 'center' }}>
                       <Typography
                         sx={{
-                          fontFamily: '"JetBrains Mono", monospace',
-                          color: 'rgba(255,255,255,0.3)',
-                          fontSize: '0.75rem',
-                          letterSpacing: '0.05em',
+                          ...MONO_TEXT_SM,
+                          color: TERMINAL_COLORS.textTertiary,
                         }}
                       >
                         예약 주문 없음
@@ -810,7 +704,7 @@ function RealtimeMonitoringPageContent() {
                   )}
                 </List>
               </Box>
-            </Paper>
+            </Card>
           </Box>
 
         </Stack>

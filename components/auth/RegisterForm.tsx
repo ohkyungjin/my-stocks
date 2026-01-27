@@ -2,17 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Alert,
-  Paper,
-  Link as MuiLink,
-} from '@mui/material';
+import { Box, Typography, Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
 import { useAuthStore } from '../../lib/store/authStore';
+import { Button } from '../ui/Button';
+import { Input } from '../ui/Input';
+import { Card } from '../ui/Card';
+import { Badge } from '../ui/Badge';
+import { MONO_TEXT_SM, MONO_TEXT_XL, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -66,6 +63,8 @@ export default function RegisterForm() {
     }
   };
 
+  const displayError = validationError || error;
+
   return (
     <Box
       sx={{
@@ -75,112 +74,201 @@ export default function RegisterForm() {
         justifyContent: 'center',
         minHeight: '100vh',
         px: 2,
+        py: 4,
+        bgcolor: TERMINAL_COLORS.bgPrimary,
       }}
     >
-      <Paper
-        elevation={3}
+      <Card
+        variant="default"
+        padding="lg"
         sx={{
-          p: 4,
-          maxWidth: 450,
+          maxWidth: 480,
           width: '100%',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom align="center">
-          회원가입
-        </Typography>
+        {/* Header */}
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Typography
+            component="h1"
+            sx={{
+              ...MONO_TEXT_XL,
+              color: TERMINAL_COLORS.lime,
+              mb: 1,
+            }}
+          >
+            회원가입
+          </Typography>
+          <Typography
+            sx={{
+              ...MONO_TEXT_SM,
+              color: TERMINAL_COLORS.textSecondary,
+            }}
+          >
+            새로운 계정을 만들어보세요
+          </Typography>
+        </Box>
 
-        <Typography variant="body2" color="text.secondary" align="center" sx={{ mb: 3 }}>
-          새로운 계정을 만들어보세요
-        </Typography>
-
-        {(error || validationError) && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {validationError || error}
-          </Alert>
+        {/* Error Alert */}
+        {displayError && (
+          <Card
+            variant="highlight"
+            padding="sm"
+            sx={{
+              mb: 3,
+              borderColor: TERMINAL_COLORS.error,
+              bgcolor: 'rgba(239, 68, 68, 0.1)',
+            }}
+          >
+            <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
+              <Badge variant="error" size="sm">
+                ✕
+              </Badge>
+              <Typography
+                sx={{
+                  ...MONO_TEXT_SM,
+                  color: TERMINAL_COLORS.error,
+                  flex: 1,
+                }}
+              >
+                {displayError}
+              </Typography>
+            </Box>
+          </Card>
         )}
 
+        {/* Registration Form */}
         <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="사용자명"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            margin="normal"
-            required
-            autoFocus
-            disabled={isLoading}
-            helperText="3자 이상의 고유한 사용자명을 입력하세요"
-          />
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+            <Input
+              fullWidth
+              label="사용자명"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              autoFocus
+              disabled={isLoading}
+              placeholder="johndoe"
+              helperText="3자 이상의 고유한 사용자명을 입력하세요"
+            />
 
-          <TextField
-            fullWidth
-            label="이메일"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            margin="normal"
-            required
-            disabled={isLoading}
-          />
+            <Input
+              fullWidth
+              label="이메일"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="your@email.com"
+            />
 
-          <TextField
-            fullWidth
-            label="이름 (선택)"
-            name="full_name"
-            value={formData.full_name}
-            onChange={handleChange}
-            margin="normal"
-            disabled={isLoading}
-          />
+            <Input
+              fullWidth
+              label="이름 (선택)"
+              name="full_name"
+              value={formData.full_name}
+              onChange={handleChange}
+              disabled={isLoading}
+              placeholder="홍길동"
+            />
 
-          <TextField
-            fullWidth
-            label="비밀번호"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            margin="normal"
-            required
-            disabled={isLoading}
-            helperText="최소 8자 이상"
-          />
+            <Input
+              fullWidth
+              label="비밀번호"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="••••••••"
+              helperText="최소 8자 이상"
+            />
 
-          <TextField
-            fullWidth
-            label="비밀번호 확인"
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            margin="normal"
-            required
-            disabled={isLoading}
-          />
+            <Input
+              fullWidth
+              label="비밀번호 확인"
+              name="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="••••••••"
+            />
 
-          <Button
-            fullWidth
-            type="submit"
-            variant="contained"
-            size="large"
-            disabled={isLoading}
-            sx={{ mt: 3, mb: 2 }}
-          >
-            {isLoading ? '가입 중...' : '회원가입'}
-          </Button>
-
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="body2" color="text.secondary">
-              이미 계정이 있으신가요?{' '}
-              <MuiLink component={Link} href="/login">
-                로그인
-              </MuiLink>
-            </Typography>
+            <Button
+              fullWidth
+              type="submit"
+              variant="primary"
+              size="large"
+              isLoading={isLoading}
+              disabled={isLoading}
+              sx={{ mt: 1 }}
+            >
+              {isLoading ? '가입 중...' : '회원가입'}
+            </Button>
           </Box>
         </form>
-      </Paper>
+
+        {/* Footer Links */}
+        <Box sx={{ textAlign: 'center', mt: 3 }}>
+          <Typography
+            sx={{
+              ...MONO_TEXT_SM,
+              color: TERMINAL_COLORS.textSecondary,
+            }}
+          >
+            이미 계정이 있으신가요?{' '}
+            <MuiLink
+              component={Link}
+              href="/login"
+              sx={{
+                color: TERMINAL_COLORS.lime,
+                textDecoration: 'none',
+                '&:hover': {
+                  textDecoration: 'underline',
+                },
+              }}
+            >
+              로그인
+            </MuiLink>
+          </Typography>
+        </Box>
+
+        {/* Info Card */}
+        <Card
+          variant="dark"
+          padding="sm"
+          sx={{ mt: 3 }}
+        >
+          <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
+            <Badge variant="info" size="sm">
+              i
+            </Badge>
+            <Typography
+              sx={{
+                ...MONO_TEXT_SM,
+                fontSize: '0.625rem',
+                color: TERMINAL_COLORS.textTertiary,
+                lineHeight: 1.6,
+                flex: 1,
+              }}
+            >
+              계정 생성 후 자동으로 로그인되며, 실시간 거래 모니터링 페이지로 이동합니다.
+            </Typography>
+          </Box>
+        </Card>
+      </Card>
+
+      {/* Bottom Badge */}
+      <Box sx={{ mt: 3 }}>
+        <Badge variant="info" size="sm">
+          Terminal Lux Design
+        </Badge>
+      </Box>
     </Box>
   );
 }

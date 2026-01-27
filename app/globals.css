@@ -19,3 +19,53 @@ body {
   font-feature-settings: "tnum";
 }
 
+/* Accessibility: Screen reader only - visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Accessibility: Focus indicators for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #00FF41;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Remove default focus outline only when focus-visible is supported */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Custom focus styles for Terminal Lux components */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #00FF41;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 255, 65, 0.1);
+}
+

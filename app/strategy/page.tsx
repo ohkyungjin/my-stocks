@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography, Stack, Alert, CircularProgress, Tabs, Tab, Button, Select, MenuItem } from '@mui/material';
+import { Box, Typography, Stack, Tabs, Tab, Select, MenuItem } from '@mui/material';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -11,6 +11,18 @@ import { StrategyParameters } from '@/lib/types/api';
 import { useStrategy } from '@/lib/hooks/useStrategy';
 import { runStrategyWithSymbols } from '@/lib/api/endpoints';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import { LoadingState } from '@/components/common/LoadingState';
+import { ErrorState } from '@/components/common/ErrorState';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import {
+  MONO_TEXT_SM,
+  MONO_TEXT_MD,
+  MONO_TEXT_XS,
+  TERMINAL_COLORS,
+  SPACING,
+  RADIUS,
+} from '@/lib/theme/styleConstants';
 
 function StrategyPageContent() {
   const searchParams = useSearchParams();
@@ -64,9 +76,7 @@ function StrategyPageContent() {
   if (loading && !strategy) {
     return (
       <DashboardShell>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-          <CircularProgress sx={{ color: '#00FF41' }} />
-        </Box>
+        <LoadingState message="전략 정보를 불러오는 중..." variant="spinner" minHeight="400px" />
       </DashboardShell>
     );
   }
@@ -75,31 +85,11 @@ function StrategyPageContent() {
   if (error || !strategy) {
     return (
       <DashboardShell>
-        <Alert
-          severity="error"
-          sx={{
-            bgcolor: 'rgba(255,0,110,0.05)',
-            border: '1px solid rgba(255,0,110,0.2)',
-            color: '#FF006E',
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.75rem',
-            borderRadius: '2px',
-          }}
-        >
-          {error || '전략을 불러올 수 없습니다'}
-          <Button
-            size="small"
-            onClick={refetch}
-            sx={{
-              ml: 2,
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.7rem',
-              color: '#FF006E',
-            }}
-          >
-            재시도
-          </Button>
-        </Alert>
+        <ErrorState
+          message={error || '전략을 불러올 수 없습니다'}
+          onRetry={refetch}
+          minHeight="400px"
+        />
       </DashboardShell>
     );
   }
@@ -116,7 +106,7 @@ function StrategyPageContent() {
         `}</style>
 
         {/* Header Section */}
-        <Box sx={{ mb: 4, position: 'relative' }}>
+        <Box sx={{ mb: SPACING[4], position: 'relative' }}>
           <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
             <Box>
               <Typography
@@ -127,7 +117,7 @@ function StrategyPageContent() {
                   letterSpacing: '-0.04em',
                   lineHeight: 1,
                   mb: 1,
-                  color: '#FFFFFF',
+                  color: TERMINAL_COLORS.textPrimary,
                   background: 'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0.6) 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -137,9 +127,8 @@ function StrategyPageContent() {
               </Typography>
               <Typography
                 sx={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: '0.75rem',
-                  color: 'rgba(255,255,255,0.4)',
+                  ...MONO_TEXT_SM,
+                  color: TERMINAL_COLORS.textTertiary,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                 }}
@@ -158,22 +147,23 @@ function StrategyPageContent() {
                   minWidth: 280,
                   bgcolor: 'rgba(10,10,12,0.6)',
                   backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '2px',
+                  border: '1px solid',
+                  borderColor: TERMINAL_COLORS.borderDefault,
+                  borderRadius: RADIUS.sm,
                   fontFamily: '"Space Grotesk", sans-serif',
-                  color: '#FFFFFF',
+                  color: TERMINAL_COLORS.textPrimary,
                   fontSize: '0.85rem',
                   '& .MuiOutlinedInput-notchedOutline': {
                     border: 'none',
                   },
                   '&:hover': {
-                    borderColor: 'rgba(0,255,65,0.3)',
+                    borderColor: TERMINAL_COLORS.lime,
                   },
                   '&.Mui-focused': {
-                    borderColor: '#00FF41',
+                    borderColor: TERMINAL_COLORS.lime,
                   },
                   '& .MuiSelect-icon': {
-                    color: 'rgba(255,255,255,0.5)',
+                    color: TERMINAL_COLORS.textSecondary,
                   }
                 }}
               >
@@ -182,33 +172,13 @@ function StrategyPageContent() {
               </Select>
 
               <Button
-                variant="outlined"
-                size="small"
-                startIcon={<RefreshIcon sx={{ fontSize: 16 }} />}
+                variant="secondary"
+                size="medium"
                 onClick={refetch}
                 disabled={loading}
-                sx={{
-                  borderRadius: '2px',
-                  textTransform: 'none',
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontWeight: 700,
-                  fontSize: '0.7rem',
-                  py: 0.8,
-                  px: 2,
-                  borderColor: 'rgba(255,255,255,0.1)',
-                  color: 'rgba(255,255,255,0.6)',
-                  letterSpacing: '0.05em',
-                  '&:hover': {
-                    borderColor: '#00FF41',
-                    bgcolor: 'rgba(0,255,65,0.05)',
-                    color: '#00FF41',
-                  },
-                  '&:disabled': {
-                    borderColor: 'rgba(255,255,255,0.05)',
-                    color: 'rgba(255,255,255,0.2)',
-                  }
-                }}
+                sx={{ minWidth: 100 }}
               >
+                <RefreshIcon sx={{ fontSize: 16, mr: 0.5 }} />
                 REFRESH
               </Button>
             </Stack>
@@ -218,21 +188,19 @@ function StrategyPageContent() {
           <Box
             sx={{
               height: '2px',
-              background: 'linear-gradient(90deg, #00FF41 0%, transparent 50%)',
-              mt: 2,
+              background: `linear-gradient(90deg, ${TERMINAL_COLORS.lime} 0%, transparent 50%)`,
+              mt: SPACING[2],
               opacity: 0.3,
             }}
           />
         </Box>
 
         {/* Tabs */}
-        <Box
+        <Card
+          variant="default"
+          padding="none"
           sx={{
-            mb: 3,
-            bgcolor: 'rgba(10,10,12,0.6)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: '4px',
+            mb: SPACING[3],
             overflow: 'hidden',
           }}
         >
@@ -246,14 +214,14 @@ function StrategyPageContent() {
                 fontSize: '0.85rem',
                 letterSpacing: '-0.01em',
                 textTransform: 'none',
-                color: 'rgba(255,255,255,0.4)',
-                py: 2,
+                color: TERMINAL_COLORS.textSecondary,
+                py: SPACING[2],
                 '&.Mui-selected': {
-                  color: '#00FF41',
+                  color: TERMINAL_COLORS.lime,
                 },
               },
               '& .MuiTabs-indicator': {
-                bgcolor: '#00FF41',
+                bgcolor: TERMINAL_COLORS.lime,
                 height: '2px',
               }
             }}
@@ -261,7 +229,7 @@ function StrategyPageContent() {
             <Tab label="파라미터 & 실행" />
             <Tab label="시그널 관리" />
           </Tabs>
-        </Box>
+        </Card>
 
         {/* Tab Content */}
         {selectedTab === 0 && parameters && (
@@ -287,9 +255,7 @@ export default function StrategyPage() {
       <Suspense
         fallback={
           <DashboardShell>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-              <CircularProgress sx={{ color: '#00FF41' }} />
-            </Box>
+            <LoadingState message="페이지를 불러오는 중..." variant="spinner" minHeight="400px" />
           </DashboardShell>
         }
       >

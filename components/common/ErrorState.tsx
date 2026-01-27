@@ -1,7 +1,11 @@
 'use client';
 
-import { Box, Alert, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
+import { Card } from '../ui/Card';
+import { Badge } from '../ui/Badge';
+import { Button } from '../ui/Button';
+import { MONO_TEXT_SM, MONO_TEXT_MD, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
 
 interface ErrorStateProps {
   title?: string;
@@ -24,27 +28,67 @@ export function ErrorState({
         alignItems: 'center',
         justifyContent: 'center',
         minHeight,
-        gap: 2,
+        px: 2,
       }}
     >
-      <Alert severity="error" sx={{ maxWidth: 600 }}>
-        <Typography variant="h6" gutterBottom>
+      <Card
+        variant="highlight"
+        padding="lg"
+        sx={{
+          maxWidth: 600,
+          width: '100%',
+          borderColor: TERMINAL_COLORS.error,
+          bgcolor: 'rgba(239, 68, 68, 0.05)',
+        }}
+      >
+        {/* Error Icon Badge */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+          <Badge variant="error" size="md">
+            ✕
+          </Badge>
+        </Box>
+
+        {/* Error Title */}
+        <Typography
+          sx={{
+            ...MONO_TEXT_MD,
+            color: TERMINAL_COLORS.error,
+            textAlign: 'center',
+            mb: 2,
+            fontWeight: 700,
+          }}
+        >
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
+
+        {/* Error Message */}
+        <Typography
+          sx={{
+            ...MONO_TEXT_SM,
+            color: TERMINAL_COLORS.textSecondary,
+            textAlign: 'center',
+            lineHeight: 1.6,
+            mb: onRetry ? 3 : 0,
+          }}
+        >
           {message}
         </Typography>
+
+        {/* Retry Button */}
         {onRetry && (
-          <Button
-            variant="outlined"
-            startIcon={<RefreshIcon />}
-            onClick={onRetry}
-            sx={{ mt: 2 }}
-          >
-            다시 시도
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="danger"
+              size="medium"
+              onClick={onRetry}
+              sx={{ minWidth: 140 }}
+            >
+              <RefreshIcon sx={{ mr: 1, fontSize: 18 }} />
+              다시 시도
+            </Button>
+          </Box>
         )}
-      </Alert>
+      </Card>
     </Box>
   );
 }

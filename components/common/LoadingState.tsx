@@ -1,18 +1,69 @@
 'use client';
 
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { Skeleton } from '../ui/Skeleton';
+import { Card } from '../ui/Card';
+import { MONO_TEXT_SM, MONO_TEXT_MD, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
 
 interface LoadingStateProps {
   message?: string;
-  size?: number;
+  variant?: 'spinner' | 'skeleton' | 'card';
   minHeight?: string;
 }
 
 export function LoadingState({
   message = '로딩 중...',
-  size = 48,
+  variant = 'skeleton',
   minHeight = '400px',
 }: LoadingStateProps) {
+  // Skeleton variant - modern loading placeholder
+  if (variant === 'skeleton') {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          minHeight,
+          justifyContent: 'center',
+        }}
+      >
+        <Skeleton variant="text" width="40%" />
+        <Skeleton variant="rectangular" width="100%" height={120} />
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Skeleton variant="rectangular" width="50%" height={80} />
+          <Skeleton variant="rectangular" width="50%" height={80} />
+        </Box>
+        <Skeleton variant="text" width="60%" lines={2} />
+      </Box>
+    );
+  }
+
+  // Card variant - loading card with message
+  if (variant === 'card') {
+    return (
+      <Card
+        variant="default"
+        padding="lg"
+        sx={{
+          minHeight,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
+        <Skeleton variant="text" width="50%" />
+        <Skeleton variant="rectangular" width="100%" height={200} />
+        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+          <Skeleton variant="text" width="30%" />
+          <Skeleton variant="text" width="30%" />
+          <Skeleton variant="text" width="30%" />
+        </Box>
+      </Card>
+    );
+  }
+
+  // Spinner variant - simple centered loader
   return (
     <Box
       sx={{
@@ -21,11 +72,31 @@ export function LoadingState({
         alignItems: 'center',
         justifyContent: 'center',
         minHeight,
-        gap: 2,
+        gap: 3,
       }}
     >
-      <CircularProgress size={size} />
-      <Typography variant="body1" color="text.secondary">
+      {/* Animated Terminal Lux Spinner */}
+      <Box
+        sx={{
+          width: 48,
+          height: 48,
+          border: '3px solid',
+          borderColor: TERMINAL_COLORS.borderDefault,
+          borderTopColor: TERMINAL_COLORS.lime,
+          borderRadius: '50%',
+          animation: 'spin 0.8s linear infinite',
+          '@keyframes spin': {
+            '0%': { transform: 'rotate(0deg)' },
+            '100%': { transform: 'rotate(360deg)' },
+          },
+        }}
+      />
+      <Typography
+        sx={{
+          ...MONO_TEXT_MD,
+          color: TERMINAL_COLORS.textSecondary,
+        }}
+      >
         {message}
       </Typography>
     </Box>
