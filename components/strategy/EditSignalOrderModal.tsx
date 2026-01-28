@@ -38,10 +38,15 @@ export function EditSignalOrderModal({
 
   useEffect(() => {
     if (signal?.scheduled_order) {
-      setOrderPrice(signal.scheduled_order.order_price);
+      const orderPrice = signal.scheduled_order.order_price;
+      setOrderPrice(orderPrice);
       setStopLossPrice(signal.scheduled_order.stop_loss_price);
       setTakeProfitPrice(signal.scheduled_order.take_profit_price);
-      setQuantity(signal.scheduled_order.quantity);
+
+      // 🔥 30만원 기준 자동 수량 계산
+      const maxInvestment = 300000; // 1종목당 30만원 제한
+      const autoQuantity = orderPrice > 0 ? Math.floor(maxInvestment / orderPrice) : 0;
+      setQuantity(autoQuantity);
     }
   }, [signal]);
 
@@ -83,7 +88,7 @@ export function EditSignalOrderModal({
           {signal?.symbol_name} ({signal?.symbol})
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          주문 수정
+          주문 수정 (1종목당 30만원 기준 자동 계산)
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -108,17 +113,22 @@ export function EditSignalOrderModal({
           />
 
           {/* 수량 */}
-          <TextField
-            label="수량"
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            fullWidth
-            size="small"
-            InputProps={{
-              endAdornment: <InputAdornment position="end">주</InputAdornment>,
-            }}
-          />
+          <Box>
+            <TextField
+              label="수량"
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              fullWidth
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="end">주</InputAdornment>,
+              }}
+            />
+            <Typography variant="caption" color="primary" sx={{ mt: 0.5, display: 'block' }}>
+              30만원 기준: {orderPrice > 0 ? `${Math.floor(300000 / orderPrice)}주` : '0주'} (총 {formatCurrency(orderPrice * quantity)}원)
+            </Typography>
+          </Box>
 
           <Divider />
 

@@ -1,5 +1,7 @@
 'use client';
 
+import { COLORS } from '@/lib/theme/styleConstants';
+
 /**
  * Skip Navigation Component
  *
@@ -18,8 +20,8 @@ export function SkipNavigation() {
         left: '-9999px',
         zIndex: 9999,
         padding: '1rem 1.5rem',
-        backgroundColor: '#00FF41',
-        color: '#000000',
+        backgroundColor: COLORS.success.main,
+        color: COLORS.background.pure,
         fontFamily: 'JetBrains Mono, monospace',
         fontSize: '0.875rem',
         fontWeight: 700,

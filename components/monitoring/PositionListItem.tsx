@@ -1,10 +1,11 @@
 /**
  * Position List Item Component
  * Simplified view showing only symbol name and profit/loss rate
+ * FinFlow Dark Design: Minimal borders, color-coded profit/loss
  */
 
 import { Box, Typography } from '@mui/material';
-import { TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import { COLORS, TEXT_HEADING_SM, TEXT_BODY_SM } from '@/lib/theme/styleConstants';
 import type { Holding } from '@/lib/types/monitoring';
 
 interface PositionListItemProps {
@@ -15,7 +16,7 @@ interface PositionListItemProps {
 
 export function PositionListItem({ holding, onClick, isSelected }: PositionListItemProps) {
   const isPositive = holding.profit_loss_rate >= 0;
-  const accentColor = isPositive ? TERMINAL_COLORS.lime : TERMINAL_COLORS.pink;
+  const accentColor = isPositive ? COLORS.semantic.profit : COLORS.semantic.loss;
 
   return (
     <Box
@@ -24,28 +25,30 @@ export function PositionListItem({ holding, onClick, isSelected }: PositionListI
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        py: 1,
-        px: 1.5,
-        borderRadius: '2px',
+        py: 1.25,
+        px: 2,
+        borderRadius: '6px',
         cursor: 'pointer',
-        transition: 'all 0.2s',
-        bgcolor: isSelected ? 'rgba(0,255,65,0.05)' : 'transparent',
+        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+        bgcolor: isSelected
+          ? (isPositive ? COLORS.success.subtle : COLORS.danger.subtle)
+          : 'transparent',
         border: '1px solid',
         borderColor: isSelected ? accentColor : 'transparent',
         mb: 0.5,
         '&:hover': {
-          bgcolor: isSelected ? 'rgba(0,255,65,0.08)' : 'rgba(255,255,255,0.02)',
+          bgcolor: isSelected
+            ? (isPositive ? COLORS.success.subtle : COLORS.danger.subtle)
+            : COLORS.background.secondary,
           borderColor: accentColor,
+          boxShadow: isPositive ? COLORS.success.glow : COLORS.danger.glow,
         }
       }}
     >
       <Typography
         sx={{
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '0.85rem',
-          fontWeight: 700,
-          color: TERMINAL_COLORS.textPrimary,
-          letterSpacing: '-0.01em',
+          ...TEXT_HEADING_SM,
+          color: COLORS.text.primary,
         }}
       >
         {holding.symbol_name}
@@ -55,23 +58,22 @@ export function PositionListItem({ holding, onClick, isSelected }: PositionListI
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: 0.5,
+          gap: 0.75,
         }}
       >
         <Typography
           sx={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.85rem',
+            ...TEXT_BODY_SM,
             fontWeight: 800,
             color: accentColor,
-            letterSpacing: '-0.01em',
+            fontVariantNumeric: 'tabular-nums',
           }}
         >
           {isPositive ? '+' : ''}{holding.profit_loss_rate.toFixed(2)}%
         </Typography>
         <Box
           sx={{
-            fontSize: 12,
+            fontSize: 14,
             color: accentColor,
             display: 'flex',
             alignItems: 'center',

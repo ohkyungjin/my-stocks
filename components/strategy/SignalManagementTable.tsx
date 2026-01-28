@@ -35,7 +35,7 @@ interface SignalManagementTableProps {
   onUpdateOrder?: (orderId: number, data: any) => Promise<void>;
 }
 
-type SortField = 'symbol' | 'order_price' | 'stop_loss_price' | 'take_profit_price' | 'confidence' | 'created_at' | 'timestamp' | 'monitoring_status' | 'order_status';
+type SortField = 'symbol' | 'order_price' | 'stop_loss_price' | 'confidence' | 'created_at' | 'timestamp' | 'monitoring_status' | 'order_status';
 type SortOrder = 'asc' | 'desc';
 
 export function SignalManagementTable({
@@ -82,7 +82,7 @@ export function SignalManagementTable({
   // 필드에서 포커스를 잃었을 때 자동 저장
   const handleFieldBlur = async (
     signal: Signal,
-    field: 'orderPrice' | 'quantity' | 'stopLossPrice' | 'takeProfitPrice',
+    field: 'orderPrice' | 'quantity' | 'stopLossPrice',
     value: string
   ) => {
     if (!signal.scheduled_order || !onUpdateOrder) return;
@@ -105,9 +105,6 @@ export function SignalManagementTable({
       case 'stopLossPrice':
         originalValue = signal.scheduled_order.stop_loss_price;
         break;
-      case 'takeProfitPrice':
-        originalValue = signal.scheduled_order.take_profit_price;
-        break;
     }
 
     // 값이 변경되지 않았으면 저장하지 않음
@@ -121,7 +118,7 @@ export function SignalManagementTable({
         order_price: signal.scheduled_order.order_price,
         quantity: signal.scheduled_order.quantity,
         stop_loss_price: signal.scheduled_order.stop_loss_price,
-        take_profit_price: signal.scheduled_order.take_profit_price,
+        take_profit_price: null, // 트레일링 스톱 전략 사용 (목표가 없음)
       };
 
       switch (field) {
@@ -133,9 +130,6 @@ export function SignalManagementTable({
           break;
         case 'stopLossPrice':
           updateData.stop_loss_price = numericValue;
-          break;
-        case 'takeProfitPrice':
-          updateData.take_profit_price = numericValue;
           break;
       }
 
@@ -170,10 +164,6 @@ export function SignalManagementTable({
           aVal = a.scheduled_order?.stop_loss_price || 0;
           bVal = b.scheduled_order?.stop_loss_price || 0;
           break;
-        case 'take_profit_price':
-          aVal = a.scheduled_order?.take_profit_price || 0;
-          bVal = b.scheduled_order?.take_profit_price || 0;
-          break;
         case 'confidence':
           aVal = a.confidence || 0;
           bVal = b.confidence || 0;
@@ -192,11 +182,18 @@ export function SignalManagementTable({
           bVal = b.scheduled_order ? (b.scheduled_order.monitoring_enabled ? 1 : 0) : -1;
           break;
         case 'order_status':
-          // 주문됨(2) > 대기(1) > 없음(0)
-          const aHasOrder = a.scheduled_order?.kis_order_no || a.scheduled_order?.filled_at;
-          const bHasOrder = b.scheduled_order?.kis_order_no || b.scheduled_order?.filled_at;
-          aVal = a.scheduled_order ? (aHasOrder ? 2 : 1) : 0;
-          bVal = b.scheduled_order ? (bHasOrder ? 2 : 1) : 0;
+          // filled(3) > pending(2) > scheduled(1) > 없음(0)
+          const getOrderStatusValue = (order: any) => {
+            if (!order) return 0;
+            switch (order.status) {
+              case 'filled': return 3;
+              case 'pending': return 2;
+              case 'scheduled': return 1;
+              default: return 0;
+            }
+          };
+          aVal = getOrderStatusValue(a.scheduled_order);
+          bVal = getOrderStatusValue(b.scheduled_order);
           break;
         default:
           return 0;
@@ -369,7 +366,6 @@ export function SignalManagementTable({
             </TableCell>
             <TableCell align="right" sx={{ width: 120 }}>주문가</TableCell>
             <TableCell align="right" sx={{ width: 80 }}>수량</TableCell>
-            <TableCell align="right" sx={{ width: 180 }}>목표가</TableCell>
             <TableCell align="right" sx={{ width: 180 }}>손절가</TableCell>
             <TableCell align="center" sx={{ width: 90 }}>
               <TableSortLabel
@@ -439,10 +435,8 @@ export function SignalManagementTable({
             // 원본 데이터에서 직접 값 가져오기
             const orderPrice = signal.scheduled_order?.order_price || 0;
             const stopLossPrice = signal.scheduled_order?.stop_loss_price || 0;
-            const takeProfitPrice = signal.scheduled_order?.take_profit_price || 0;
 
             const stopLossPct = calculatePercentage(orderPrice, stopLossPrice);
-            const takeProfitPct = calculatePercentage(orderPrice, takeProfitPrice);
 
             return (
               <TableRow
@@ -541,41 +535,6 @@ export function SignalManagementTable({
                   {signal.scheduled_order ? (
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
                       <TextField
-                        key={`take-profit-${signal.id}-${signal.scheduled_order.take_profit_price}`}
-                        size="small"
-                        defaultValue={formatNumber(signal.scheduled_order.take_profit_price, 0)}
-                        onBlur={(e) => handleFieldBlur(signal, 'takeProfitPrice', e.target.value)}
-                        disabled={savingSignals.has(signal.id)}
-                        sx={{
-                          ...inputSx,
-                          width: 100,
-                          '& input': { ...inputSx['& input'], color: '#00FF41' }
-                        }}
-                      />
-                      <Chip
-                        label={`+${takeProfitPct.toFixed(1)}%`}
-                        size="small"
-                        sx={{
-                          height: 22,
-                          fontSize: '0.6rem',
-                          fontWeight: 700,
-                          fontFamily: '"JetBrains Mono", monospace',
-                          bgcolor: 'rgba(0,255,65,0.1)',
-                          color: '#00FF41',
-                          border: '1px solid rgba(0,255,65,0.3)',
-                          minWidth: 50,
-                          borderRadius: '2px',
-                        }}
-                      />
-                    </Box>
-                  ) : (
-                    <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)' }}>-</Typography>
-                  )}
-                </TableCell>
-                <TableCell align="right">
-                  {signal.scheduled_order ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
-                      <TextField
                         key={`stop-loss-${signal.id}-${signal.scheduled_order.stop_loss_price}`}
                         size="small"
                         defaultValue={formatNumber(signal.scheduled_order.stop_loss_price, 0)}
@@ -641,26 +600,51 @@ export function SignalManagementTable({
                 <TableCell align="center">
                   {signal.scheduled_order ? (
                     (() => {
-                      const hasOrder = signal.scheduled_order.kis_order_no || signal.scheduled_order.filled_at;
+                      const status = signal.scheduled_order.status;
+                      let label = '';
+                      let bgcolor = '';
+                      let color = '';
+                      let border = '';
+
+                      switch (status) {
+                        case 'filled':
+                          label = '체결완료';
+                          bgcolor = 'rgba(0,255,65,0.1)';
+                          color = '#00FF41';
+                          border = '1px solid rgba(0,255,65,0.3)';
+                          break;
+                        case 'pending':
+                          label = '미체결';
+                          bgcolor = 'rgba(255,165,0,0.1)';
+                          color = '#FFA500';
+                          border = '1px solid rgba(255,165,0,0.3)';
+                          break;
+                        case 'scheduled':
+                          label = '예약중';
+                          bgcolor = 'rgba(156,163,175,0.1)';
+                          color = '#9CA3AF';
+                          border = '1px solid rgba(156,163,175,0.3)';
+                          break;
+                        default:
+                          label = '알수없음';
+                          bgcolor = 'rgba(255,255,255,0.05)';
+                          color = 'rgba(255,255,255,0.3)';
+                          border = '1px solid rgba(255,255,255,0.1)';
+                      }
+
                       return (
                         <Chip
-                          label={hasOrder ? '주문' : '대기'}
+                          label={label}
                           size="small"
                           sx={{
                             height: 20,
                             fontSize: '0.6rem',
                             fontWeight: 700,
                             fontFamily: '"JetBrains Mono", monospace',
-                            bgcolor: hasOrder
-                              ? 'rgba(59,130,246,0.1)'
-                              : 'rgba(255,165,0,0.1)',
-                            color: hasOrder
-                              ? '#3B82F6'
-                              : '#FFA500',
-                            border: hasOrder
-                              ? '1px solid rgba(59,130,246,0.3)'
-                              : '1px solid rgba(255,165,0,0.3)',
-                            minWidth: 40,
+                            bgcolor,
+                            color,
+                            border,
+                            minWidth: 50,
                             borderRadius: '2px',
                           }}
                         />

@@ -61,9 +61,10 @@ export function SignalManagementTab() {
 
       // Order status filter
       if (orderStatusFilter !== 'all') {
-        const isFilled = !!signal.scheduled_order?.kis_order_no;
-        if (orderStatusFilter === 'filled' && !isFilled) return false;
-        if (orderStatusFilter === 'pending' && isFilled) return false;
+        const orderStatus = signal.scheduled_order?.status;
+        if (orderStatusFilter === 'filled' && orderStatus !== 'filled') return false;
+        if (orderStatusFilter === 'pending' && orderStatus !== 'pending') return false;
+        if (orderStatusFilter === 'scheduled' && orderStatus !== 'scheduled') return false;
       }
 
       // Search query filter

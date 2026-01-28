@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { COLORS, SPACING, TRANSITIONS } from '@/lib/theme/styleConstants';
 
 interface DashboardShellProps {
   children: ReactNode;
@@ -20,7 +21,12 @@ export function DashboardShell({ children }: DashboardShellProps) {
   const DRAWER_WIDTH = 256;
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh', backgroundColor: 'background.default', overflow: 'hidden' }}>
+    <Box sx={{
+      display: 'flex',
+      height: '100vh',
+      backgroundColor: COLORS.background.pure,
+      overflow: 'hidden'
+    }}>
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <Box
@@ -33,13 +39,21 @@ export function DashboardShell({ children }: DashboardShellProps) {
           overflow: 'hidden',
           width: { xs: '100%', md: sidebarOpen ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%' },
           ml: { xs: 0, md: sidebarOpen ? `${DRAWER_WIDTH}px` : 0 },
-          transition: 'width 0.3s ease-in-out, margin-left 0.3s ease-in-out',
+          transition: TRANSITIONS.all,
         }}
       >
         <Header onToggleSidebar={handleToggleSidebar} />
 
         {/* Page Content - Scrollable */}
-        <Box id="main-content" sx={{ flexGrow: 1, p: 3, overflow: 'auto' }}>
+        <Box
+          id="main-content"
+          sx={{
+            flexGrow: 1,
+            p: SPACING[6],
+            overflow: 'auto',
+            backgroundColor: COLORS.background.pure,
+          }}
+        >
           {children}
         </Box>
 

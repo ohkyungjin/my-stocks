@@ -5,7 +5,7 @@ import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { TEXT_SM, TEXT_MD, COLORS } from '@/lib/theme/styleConstants';
+import { TEXT_SM, TEXT_MD, COLORS, SPACING, SHADOWS } from '@/lib/theme/styleConstants';
 
 interface ErrorStateProps {
   title?: string;
@@ -28,7 +28,7 @@ export function ErrorState({
         alignItems: 'center',
         justifyContent: 'center',
         minHeight,
-        px: 2,
+        px: SPACING[4],
       }}
     >
       <Card
@@ -38,12 +38,13 @@ export function ErrorState({
           maxWidth: 600,
           width: '100%',
           borderColor: COLORS.danger.main,
-          bgcolor: COLORS.danger.bg,
-          border: `1px solid ${COLORS.danger.subtle}`,
+          bgcolor: COLORS.danger.subtle,
+          border: `1px solid rgba(255, 59, 48, 0.2)`,
+          boxShadow: SHADOWS.md,
         }}
       >
         {/* Error Icon Badge */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: SPACING[6] }}>
           <Badge variant="error" size="md">
             ✕
           </Badge>
@@ -55,8 +56,9 @@ export function ErrorState({
             ...TEXT_MD,
             color: COLORS.danger.main,
             textAlign: 'center',
-            mb: 2,
+            mb: SPACING[4],
             fontWeight: 600,
+            letterSpacing: '0.01em',
           }}
         >
           {title}
@@ -68,8 +70,9 @@ export function ErrorState({
             ...TEXT_SM,
             color: COLORS.text.secondary,
             textAlign: 'center',
-            lineHeight: 1.6,
-            mb: onRetry ? 3 : 0,
+            lineHeight: 1.7,
+            mb: onRetry ? SPACING[6] : 0,
+            letterSpacing: '0.02em',
           }}
         >
           {message}

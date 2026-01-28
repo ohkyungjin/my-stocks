@@ -22,6 +22,7 @@ import {
 } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../../lib/store/authStore';
+import { COLORS, SPACING, RADIUS, TEXT_BODY_SM, TEXT_CAPTION, TRANSITIONS, SHADOWS } from '@/lib/theme/styleConstants';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -65,22 +66,23 @@ export function Header({ onToggleSidebar }: HeaderProps) {
       position="sticky"
       elevation={0}
       sx={{
-        backgroundColor: 'rgba(10,10,12,0.95)',
+        backgroundColor: COLORS.background.secondary,
         backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        borderBottom: `1px solid ${COLORS.border.separator}`,
       }}
     >
-      <Toolbar sx={{ justifyContent: 'space-between', px: 3, minHeight: '64px !important' }}>
+      <Toolbar sx={{ justifyContent: 'space-between', px: SPACING[6], minHeight: '64px !important' }}>
         <IconButton
           color="inherit"
           aria-label="toggle sidebar"
           edge="start"
           onClick={onToggleSidebar}
           sx={{
-            color: 'rgba(255,255,255,0.6)',
+            color: COLORS.text.secondary,
+            transition: TRANSITIONS.color,
             '&:hover': {
-              color: '#00FF41',
-              bgcolor: 'rgba(0,255,65,0.1)',
+              color: COLORS.primary.main,
+              bgcolor: COLORS.primary.subtle,
             }
           }}
         >
@@ -95,14 +97,15 @@ export function Header({ onToggleSidebar }: HeaderProps) {
               sx={{
                 width: 32,
                 height: 32,
-                backgroundColor: '#00FF41',
-                color: '#000000',
+                backgroundColor: COLORS.primary.main,
+                color: COLORS.text.inverse,
                 fontSize: '0.875rem',
                 fontWeight: 800,
-                fontFamily: '"JetBrains Mono", monospace',
                 cursor: 'pointer',
+                transition: TRANSITIONS.background,
                 '&:hover': {
-                  backgroundColor: '#00CC35',
+                  backgroundColor: COLORS.primary.dark,
+                  boxShadow: SHADOWS.glow.primary,
                 }
               }}
             >
@@ -117,38 +120,40 @@ export function Header({ onToggleSidebar }: HeaderProps) {
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               PaperProps={{
                 sx: {
-                  mt: 1,
+                  mt: SPACING[2],
                   minWidth: 200,
-                  backgroundColor: 'rgba(20,20,24,0.98)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: COLORS.background.tertiary,
+                  border: `1px solid ${COLORS.border.default}`,
+                  borderRadius: RADIUS.md,
+                  boxShadow: SHADOWS.lg,
                 }
               }}
             >
-              <Box sx={{ px: 2, py: 1.5 }}>
-                <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 600 }}>
+              <Box sx={{ px: SPACING[4], py: SPACING[3] }}>
+                <Typography variant="subtitle2" sx={{ color: COLORS.primary.main, fontWeight: 600 }}>
                   {user.username}
                 </Typography>
-                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                <Typography variant="caption" sx={{ ...TEXT_CAPTION, color: COLORS.text.secondary }}>
                   {user.email}
                 </Typography>
               </Box>
 
-              <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)' }} />
+              <Divider sx={{ borderColor: COLORS.border.separator }} />
 
               <MenuItem onClick={handleMenuClose}>
                 <ListItemIcon>
-                  <PersonIcon fontSize="small" sx={{ color: 'rgba(255,255,255,0.6)' }} />
+                  <PersonIcon fontSize="small" sx={{ color: COLORS.text.secondary }} />
                 </ListItemIcon>
-                <ListItemText>프로필</ListItemText>
+                <ListItemText sx={{ ...TEXT_BODY_SM }}>프로필</ListItemText>
               </MenuItem>
 
-              <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)' }} />
+              <Divider sx={{ borderColor: COLORS.border.separator }} />
 
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
-                  <LogoutIcon fontSize="small" sx={{ color: '#FF4444' }} />
+                  <LogoutIcon fontSize="small" sx={{ color: COLORS.danger.main }} />
                 </ListItemIcon>
-                <ListItemText sx={{ color: '#FF4444' }}>로그아웃</ListItemText>
+                <ListItemText sx={{ ...TEXT_BODY_SM, color: COLORS.danger.main }}>로그아웃</ListItemText>
               </MenuItem>
             </Menu>
           </>
@@ -159,11 +164,14 @@ export function Header({ onToggleSidebar }: HeaderProps) {
             onClick={handleLogin}
             size="small"
             sx={{
-              color: '#00FF41',
-              borderColor: '#00FF41',
+              color: COLORS.primary.main,
+              borderColor: COLORS.primary.main,
+              borderRadius: RADIUS.sm,
+              transition: TRANSITIONS.all,
               '&:hover': {
-                borderColor: '#00CC35',
-                backgroundColor: 'rgba(0,255,65,0.1)',
+                borderColor: COLORS.primary.dark,
+                backgroundColor: COLORS.primary.subtle,
+                boxShadow: SHADOWS.glow.primary,
               }
             }}
           >

@@ -1,11 +1,18 @@
 /**
  * Portfolio Card Component
  * Displays a single holding in the portfolio carousel
+ * FinFlow Dark Design: Giant profit/loss numbers with semantic colors
  */
 
-import { Box, Paper, Stack, Typography, alpha, useTheme } from '@mui/material';
+import { Box, Paper, Stack, Typography, alpha } from '@mui/material';
 import { formatCurrency } from '@/lib/utils/formatters';
-import { GLASS_PAPER, MONO_TEXT_SM, MONO_TEXT_XS, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import {
+  COLORS,
+  CARD_INTERACTIVE,
+  TEXT_DISPLAY_MD,
+  TEXT_BODY_SM,
+  TEXT_LABEL_SM,
+} from '@/lib/theme/styleConstants';
 import type { Holding } from '@/lib/types/monitoring';
 
 interface PortfolioCardProps {
@@ -16,23 +23,23 @@ interface PortfolioCardProps {
 
 export function PortfolioCard({ holding, onClick, isSelected }: PortfolioCardProps) {
   const isPositive = holding.profit_loss_rate >= 0;
-  const accentColor = isPositive ? TERMINAL_COLORS.lime : TERMINAL_COLORS.pink;
+  const accentColor = isPositive ? COLORS.semantic.profit : COLORS.semantic.loss;
 
   return (
     <Paper
       elevation={0}
       onClick={onClick}
       sx={{
-        ...GLASS_PAPER,
-        p: 1.5,
+        ...CARD_INTERACTIVE,
+        p: 2,
         cursor: 'pointer',
-        borderColor: isSelected ? accentColor : TERMINAL_COLORS.borderDefault,
+        borderColor: isSelected ? accentColor : COLORS.border.default,
         backgroundColor: isSelected
-          ? alpha(accentColor, 0.03)
-          : 'rgba(10,10,12,0.6)',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          ? (isPositive ? COLORS.success.subtle : COLORS.danger.subtle)
+          : COLORS.background.tertiary,
+        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
         height: '100%',
-        minHeight: '120px',
+        minHeight: '140px',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -43,37 +50,42 @@ export function PortfolioCard({ holding, onClick, isSelected }: PortfolioCardPro
           top: 0,
           left: 0,
           right: 0,
-          height: '2px',
+          height: '3px',
           background: isSelected
-            ? `linear-gradient(90deg, ${accentColor} 0%, transparent 100%)`
+            ? accentColor
             : 'transparent',
-          transition: 'all 0.3s',
+          transition: 'all 0.25s',
         },
         '&:hover': {
-          transform: 'translateY(-2px)',
+          transform: 'translateY(-4px)',
           borderColor: accentColor,
-          boxShadow: `0 8px 24px ${alpha(accentColor, 0.15)}`,
+          boxShadow: isPositive ? COLORS.success.glow : COLORS.danger.glow,
+          backgroundColor: isSelected
+            ? (isPositive ? COLORS.success.subtle : COLORS.danger.subtle)
+            : COLORS.background.elevated,
         },
       }}
     >
       {/* Header: Symbol Name */}
-      <Stack spacing={0.5} mb={1.2}>
+      <Stack spacing={0.5} mb={1.5}>
         <Typography
           sx={{
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontSize: '0.85rem',
+            fontFamily: 'var(--font-inter)',
+            fontSize: '1rem',
             fontWeight: 700,
             letterSpacing: '-0.01em',
             lineHeight: 1.2,
-            color: TERMINAL_COLORS.textPrimary,
+            color: COLORS.text.primary,
           }}
         >
           {holding.symbol_name}
         </Typography>
         <Typography
           sx={{
-            ...MONO_TEXT_SM,
-            color: TERMINAL_COLORS.textSecondary,
+            ...TEXT_LABEL_SM,
+            color: COLORS.text.tertiary,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
           }}
         >
           {holding.symbol}
@@ -81,47 +93,47 @@ export function PortfolioCard({ holding, onClick, isSelected }: PortfolioCardPro
       </Stack>
 
       {/* Metrics */}
-      <Stack spacing={0.6} sx={{ mt: 'auto' }}>
+      <Stack spacing={1} sx={{ mt: 'auto' }}>
         <MetricRow label="수량" value={holding.quantity.toLocaleString()} />
         <MetricRow label="평가액" value={formatCurrency(holding.eval_amount)} />
 
         <Box
           sx={{
             height: '1px',
-            background: 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
-            my: 0.5,
+            background: COLORS.border.separator,
+            my: 0.75,
           }}
         />
 
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        {/* Giant Profit/Loss Display */}
+        <Stack spacing={0.5}>
           <Typography
             sx={{
-              ...MONO_TEXT_XS,
-              color: TERMINAL_COLORS.textSecondary,
-              letterSpacing: '0.05em',
-              fontWeight: 500,
+              ...TEXT_LABEL_SM,
+              color: COLORS.text.secondary,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
             }}
           >
             손익률
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={0.6}>
+          <Stack direction="row" alignItems="baseline" spacing={0.5}>
             <Typography
               sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.9rem',
-                fontWeight: 800,
+                ...TEXT_DISPLAY_MD,
                 color: accentColor,
-                letterSpacing: '-0.02em',
+                fontVariantNumeric: 'tabular-nums',
               }}
             >
               {isPositive ? '+' : ''}{holding.profit_loss_rate.toFixed(2)}%
             </Typography>
             <Box
               sx={{
-                fontSize: 14,
+                fontSize: 20,
                 color: accentColor,
                 display: 'flex',
                 alignItems: 'center',
+                pb: 0.5,
               }}
             >
               {isPositive ? '▲' : '▼'}
@@ -139,19 +151,20 @@ function MetricRow({ label, value }: { label: string; value: string }) {
     <Stack direction="row" justifyContent="space-between" alignItems="baseline">
       <Typography
         sx={{
-          ...MONO_TEXT_XS,
-          color: TERMINAL_COLORS.textSecondary,
-          letterSpacing: '0.05em',
-          fontWeight: 500,
+          ...TEXT_LABEL_SM,
+          color: COLORS.text.secondary,
+          textTransform: 'uppercase',
+          letterSpacing: '0.08em',
         }}
       >
         {label}
       </Typography>
       <Typography
         sx={{
-          ...MONO_TEXT_SM,
+          ...TEXT_BODY_SM,
           fontWeight: 600,
-          color: TERMINAL_COLORS.textPrimary,
+          color: COLORS.text.primary,
+          fontVariantNumeric: 'tabular-nums',
         }}
       >
         {value}

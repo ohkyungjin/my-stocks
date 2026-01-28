@@ -1,15 +1,15 @@
 'use client';
 
 import { Box, BoxProps } from '@mui/material';
-import { TEXT_XS, COLORS, RADIUS, SPACING } from '@/lib/theme/styleConstants';
+import { TEXT_CAPTION, COLORS, RADIUS, SPACING } from '@/lib/theme/styleConstants';
 
 interface BadgeProps extends BoxProps {
   /**
    * Badge color variant
-   * - default: Neutral slate
-   * - success: Emerald for positive states (profit)
+   * - default: Neutral tertiary background
+   * - success: Robinhood green (#00C805) for positive states (profit)
    * - warning: Amber for warnings
-   * - error: Rose for errors (loss)
+   * - error: Vibrant red (#FF3B30) for errors (loss)
    * - info: Blue for informational
    */
   variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
@@ -78,12 +78,12 @@ export function Badge({
     <Box
       component="span"
       sx={[
-        TEXT_XS,
+        TEXT_CAPTION,
         {
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: RADIUS.md,
+          borderRadius: RADIUS.sm,
           whiteSpace: 'nowrap',
           fontWeight: 600,
         },

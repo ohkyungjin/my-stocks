@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
-import { TEXT_SM, TEXT_MD, COLORS } from '@/lib/theme/styleConstants';
+import { TEXT_SM, TEXT_MD, COLORS, SPACING, SHADOWS } from '@/lib/theme/styleConstants';
 
 interface EmptyStateProps {
   title: string;
@@ -32,7 +32,7 @@ export function EmptyState({
         alignItems: 'center',
         justifyContent: 'center',
         minHeight,
-        px: 2,
+        px: SPACING[4],
       }}
     >
       <Card
@@ -42,14 +42,28 @@ export function EmptyState({
           maxWidth: 600,
           width: '100%',
           border: '2px dashed',
-          borderColor: COLORS.border.default,
+          borderColor: COLORS.border.separator, // Subtle gray border
+          bgcolor: 'rgba(156, 163, 175, 0.03)', // Very subtle gray background
+          boxShadow: SHADOWS.sm,
         }}
       >
-        {/* Empty Icon Badge */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-          <Badge variant="default" size="md">
-            ∅
-          </Badge>
+        {/* Empty Icon Badge with Modern Illustration */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: SPACING[6] }}>
+          <Box
+            sx={{
+              width: 64,
+              height: 64,
+              borderRadius: '50%',
+              bgcolor: 'rgba(156, 163, 175, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '32px',
+              color: COLORS.text.tertiary,
+            }}
+          >
+            📭
+          </Box>
         </Box>
 
         {/* Empty Title */}
@@ -58,8 +72,9 @@ export function EmptyState({
             ...TEXT_MD,
             color: COLORS.text.secondary,
             textAlign: 'center',
-            mb: message ? 2 : action ? 3 : 0,
+            mb: message ? SPACING[4] : action ? SPACING[6] : 0,
             fontWeight: 600,
+            letterSpacing: '0.01em',
           }}
         >
           {title}
@@ -72,8 +87,9 @@ export function EmptyState({
               ...TEXT_SM,
               color: COLORS.text.tertiary,
               textAlign: 'center',
-              lineHeight: 1.6,
-              mb: action ? 3 : 0,
+              lineHeight: 1.7,
+              mb: action ? SPACING[6] : 0,
+              letterSpacing: '0.02em',
             }}
           >
             {message}

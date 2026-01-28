@@ -266,7 +266,7 @@ export default function RegisterForm() {
       {/* Bottom Badge */}
       <Box sx={{ mt: 3 }}>
         <Badge variant="info" size="sm">
-          Terminal Lux Design
+          FinFlow Dark
         </Badge>
       </Box>
     </Box>

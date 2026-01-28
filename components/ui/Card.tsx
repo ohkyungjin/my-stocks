@@ -1,15 +1,15 @@
 'use client';
 
 import { Box, BoxProps } from '@mui/material';
-import { CARD_PRIMARY, CARD_SECONDARY, CARD_ELEVATED, RADIUS, SPACING, COLORS } from '@/lib/theme/styleConstants';
+import { CARD_DEFAULT, CARD_ELEVATED, CARD_HIGHLIGHT, RADIUS, SPACING, COLORS, SHADOWS } from '@/lib/theme/styleConstants';
 
 interface CardProps extends BoxProps {
   /**
    * Card style variant
-   * - default: Standard slate-800 surface
-   * - secondary: Lighter slate-700 variant
-   * - elevated: Elevated slate-600 with strong shadow
-   * - highlight: Purple-accented border for emphasis
+   * - default: Standard tertiary background surface (#1A1A1A)
+   * - secondary: Secondary background (#0D0D0D)
+   * - elevated: Elevated surface with shadow
+   * - highlight: Purple-accented border with glow
    */
   variant?: 'default' | 'secondary' | 'elevated' | 'highlight';
   /**
@@ -25,7 +25,7 @@ interface CardProps extends BoxProps {
 /**
  * FinFlow Dark Card Component
  *
- * Modern fintech card with soft shadows and rounded corners.
+ * Modern fintech card with true black backgrounds and minimal shadows.
  * Supports multiple surface levels and padding sizes.
  *
  * @example
@@ -50,15 +50,15 @@ export function Card({
   };
 
   const variants = {
-    default: CARD_PRIMARY,
-    secondary: CARD_SECONDARY,
-    elevated: CARD_ELEVATED,
-    highlight: {
-      bgcolor: COLORS.primary.subtle,
-      border: `1px solid ${COLORS.primary.main}`,
-      borderRadius: RADIUS.lg,
-      boxShadow: `0 0 0 1px ${COLORS.primary.glow}`,
+    default: CARD_DEFAULT,
+    secondary: {
+      bgcolor: COLORS.background.secondary,
+      borderRadius: RADIUS.md,
+      border: `1px solid ${COLORS.border.default}`,
+      boxShadow: SHADOWS.none,
     },
+    elevated: CARD_ELEVATED,
+    highlight: CARD_HIGHLIGHT,
   };
 
   return (

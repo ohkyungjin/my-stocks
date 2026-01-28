@@ -3,7 +3,7 @@
 import { Box, Typography } from '@mui/material';
 import { Skeleton } from '../ui/Skeleton';
 import { Card } from '../ui/Card';
-import { TEXT_MD, COLORS } from '@/lib/theme/styleConstants';
+import { TEXT_MD, COLORS, SPACING, SHADOWS } from '@/lib/theme/styleConstants';
 
 interface LoadingStateProps {
   message?: string;
@@ -72,19 +72,22 @@ export function LoadingState({
         alignItems: 'center',
         justifyContent: 'center',
         minHeight,
-        gap: 3,
+        gap: SPACING[6],
+        bgcolor: COLORS.background.primary, // True black background
+        borderRadius: '12px',
       }}
     >
-      {/* Animated FinFlow Dark Spinner */}
+      {/* Animated Purple Spinner */}
       <Box
         sx={{
           width: 48,
           height: 48,
           border: '3px solid',
-          borderColor: COLORS.border.default,
-          borderTopColor: COLORS.primary.main,
+          borderColor: COLORS.border.separator, // Subtle border
+          borderTopColor: COLORS.primary.main, // Purple accent
           borderRadius: '50%',
-          animation: 'spin 0.8s linear infinite',
+          animation: 'spin 0.8s ease-in-out infinite',
+          boxShadow: SHADOWS.sm, // Subtle depth
           '@keyframes spin': {
             '0%': { transform: 'rotate(0deg)' },
             '100%': { transform: 'rotate(360deg)' },
@@ -95,6 +98,7 @@ export function LoadingState({
         sx={{
           ...TEXT_MD,
           color: COLORS.text.secondary,
+          letterSpacing: '0.02em',
         }}
       >
         {message}

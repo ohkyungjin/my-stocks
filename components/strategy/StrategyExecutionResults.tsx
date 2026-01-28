@@ -73,7 +73,7 @@ export function StrategyExecutionResults({
         message += `⊘ ${skippedCount}개 중복으로 스킵됨\n`;
       }
       if (ordersCreated > 0) {
-        message += `✓ ${ordersCreated}개 예약 주문 자동 생성\n(저항선 가격, 목표가 +24%, 손절가 -8%)`;
+        message += `✓ ${ordersCreated}개 예약 주문 자동 생성\n(저항선 가격, 손절가 -8%, 트레일링 스탑 24% 활성화)`;
       }
 
       alert(message);

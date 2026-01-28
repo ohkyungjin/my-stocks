@@ -1,6 +1,7 @@
 /**
  * Watchlist Item Component
  * Displays a single order in the watchlist sidebar
+ * FinFlow Dark Design: Minimal borders, subtle hover states, status indicators
  */
 
 import {
@@ -12,7 +13,12 @@ import {
 } from '@mui/material';
 import { Circle as CircleIcon } from '@mui/icons-material';
 import { formatCurrency } from '@/lib/utils/formatters';
-import { MONO_TEXT_SM, MONO_TEXT_XS, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
+import {
+  COLORS,
+  TEXT_BODY_SM,
+  TEXT_LABEL_SM,
+  TEXT_HEADING_SM,
+} from '@/lib/theme/styleConstants';
 import type { Order } from '@/lib/types/monitoring';
 
 interface WatchlistItemProps {
@@ -27,7 +33,7 @@ export function WatchlistItem({ order, onClick }: WatchlistItemProps) {
       sx={{
         '&:hover': {
           '& .watchlist-item-button': {
-            bgcolor: 'rgba(255,255,255,0.02)',
+            bgcolor: COLORS.background.secondary,
           },
         },
       }}
@@ -36,13 +42,16 @@ export function WatchlistItem({ order, onClick }: WatchlistItemProps) {
         className="watchlist-item-button"
         onClick={onClick}
         sx={{
-          py: 0.8,
-          px: 1,
-          borderBottom: `1px solid ${TERMINAL_COLORS.borderDefault}`,
-          transition: 'all 0.2s',
+          py: 1.25,
+          px: 1.5,
+          borderBottom: `1px solid ${COLORS.border.separator}`,
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:last-child': { borderBottom: 'none' },
           minHeight: 'auto',
-          borderRadius: '2px',
+          borderRadius: '4px',
+          '&:hover': {
+            borderColor: COLORS.primary.subtle,
+          },
         }}
       >
         <ListItemText
@@ -50,16 +59,12 @@ export function WatchlistItem({ order, onClick }: WatchlistItemProps) {
           primary={
             <Typography
               sx={{
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: '0.8rem',
-                fontWeight: 700,
-                color: TERMINAL_COLORS.textPrimary,
-                letterSpacing: '-0.01em',
-                lineHeight: 1.2,
+                ...TEXT_HEADING_SM,
+                color: COLORS.text.primary,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
-                maxWidth: '140px',
+                maxWidth: '160px',
               }}
             >
               {order.symbol_name}
@@ -68,53 +73,59 @@ export function WatchlistItem({ order, onClick }: WatchlistItemProps) {
           secondary={
             <Typography
               sx={{
-                ...MONO_TEXT_XS,
-                color: TERMINAL_COLORS.textTertiary,
-                lineHeight: 1.3,
+                ...TEXT_LABEL_SM,
+                color: COLORS.text.tertiary,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                mt: 0.25,
               }}
             >
               {order.symbol}
             </Typography>
           }
         />
-        <Box sx={{ textAlign: 'right', ml: 1 }}>
+        <Box sx={{ textAlign: 'right', ml: 1.5 }}>
           <Typography
             sx={{
-              ...MONO_TEXT_SM,
+              ...TEXT_BODY_SM,
               fontWeight: 700,
-              color: TERMINAL_COLORS.textPrimary,
-              lineHeight: 1.2,
+              color: COLORS.text.primary,
+              fontVariantNumeric: 'tabular-nums',
+              lineHeight: 1.3,
             }}
           >
-            현재가 {formatCurrency(order.current_price || order.order_price)}
+            {formatCurrency(order.current_price || order.order_price)}
           </Typography>
           <Typography
             sx={{
-              ...MONO_TEXT_XS,
-              color: TERMINAL_COLORS.textTertiary,
-              lineHeight: 1.3,
-              mt: 0.2,
+              ...TEXT_LABEL_SM,
+              color: COLORS.text.tertiary,
+              lineHeight: 1.4,
+              mt: 0.25,
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
             }}
           >
-            주문가격 {formatCurrency(order.order_price)}
+            주문 {formatCurrency(order.order_price)}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.4, mt: 0.2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5, mt: 0.5 }}>
             <CircleIcon
               sx={{
-                fontSize: 5,
-                color: order.monitoring_enabled ? TERMINAL_COLORS.lime : 'rgba(255,255,255,0.2)',
+                fontSize: 6,
+                color: order.monitoring_enabled ? COLORS.success.main : COLORS.text.disabled,
               }}
             />
             <Typography
               sx={{
-                ...MONO_TEXT_XS,
+                ...TEXT_LABEL_SM,
                 fontWeight: 600,
-                color: order.monitoring_enabled ? TERMINAL_COLORS.lime : TERMINAL_COLORS.textTertiary,
-                letterSpacing: '0.04em',
+                color: order.monitoring_enabled ? COLORS.success.main : COLORS.text.tertiary,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
                 lineHeight: 1,
               }}
             >
-              {order.monitoring_enabled ? '실시간' : '대기'}
+              {order.monitoring_enabled ? 'LIVE' : 'IDLE'}
             </Typography>
           </Box>
         </Box>

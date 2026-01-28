@@ -21,9 +21,20 @@ import {
   Circle as CircleIcon,
   Group as GroupIcon,
   Settings as SettingsIcon,
+  Bolt as BoltIcon,
 } from '@mui/icons-material';
 import { formatDateTime } from '@/lib/utils/formatters';
 import { useAuthStore } from '@/lib/store/authStore';
+import {
+  COLORS,
+  SPACING,
+  RADIUS,
+  TEXT_LABEL_SM,
+  TEXT_CAPTION,
+  TRANSITIONS,
+  TEXT_BODY_SM,
+  SHADOWS,
+} from '@/lib/theme/styleConstants';
 
 interface NavItem {
   name: string;
@@ -57,28 +68,27 @@ const isMarketOpen = (date: Date): boolean => {
 };
 
 const listItemStyles = (isActive: boolean) => ({
-  borderRadius: '2px',
-  backgroundColor: isActive ? 'rgba(0,255,65,0.1)' : 'transparent',
-  color: isActive ? '#00FF41' : 'rgba(255,255,255,0.5)',
+  borderRadius: RADIUS.sm,
+  backgroundColor: isActive ? COLORS.primary.subtle : 'transparent',
+  color: isActive ? COLORS.primary.main : COLORS.text.secondary,
   border: '1px solid',
-  borderColor: isActive ? 'rgba(0,255,65,0.3)' : 'transparent',
-  fontFamily: '"JetBrains Mono", monospace',
+  borderColor: isActive ? COLORS.primary.main : 'transparent',
+  ...TEXT_BODY_SM,
   fontWeight: 600,
-  fontSize: '0.75rem',
-  letterSpacing: '0.02em',
-  mb: 0.5,
+  mb: SPACING[1],
+  transition: TRANSITIONS.all,
   '&:hover': {
-    backgroundColor: isActive ? 'rgba(0,255,65,0.15)' : 'rgba(255,255,255,0.05)',
-    borderColor: isActive ? 'rgba(0,255,65,0.4)' : 'rgba(0,255,65,0.2)',
-    color: isActive ? '#00FF41' : 'rgba(255,255,255,0.8)',
+    backgroundColor: isActive ? COLORS.primary.subtle : COLORS.background.secondary,
+    borderColor: isActive ? COLORS.primary.light : COLORS.border.light,
+    color: isActive ? COLORS.primary.light : COLORS.text.primary,
   },
   '&.Mui-selected': {
-    backgroundColor: 'rgba(0,255,65,0.1)',
-    color: '#00FF41',
-    borderColor: 'rgba(0,255,65,0.3)',
+    backgroundColor: COLORS.primary.subtle,
+    color: COLORS.primary.main,
+    borderColor: COLORS.primary.main,
     '&:hover': {
-      backgroundColor: 'rgba(0,255,65,0.15)',
-      borderColor: 'rgba(0,255,65,0.4)',
+      backgroundColor: COLORS.primary.subtle,
+      borderColor: COLORS.primary.light,
     },
   },
 });
@@ -102,6 +112,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   // Dynamic navigation items based on user role
   const navItems: NavItem[] = useMemo(() => {
     const items: NavItem[] = [
+      {
+        name: 'FinFlow Live',
+        href: '/finflow-live',
+        icon: <BoltIcon />,
+      },
       {
         name: '실시간 모니터링',
         href: '/realtime-monitoring',
@@ -179,56 +194,43 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     return (includeOnClick: boolean) => (
       <>
         <Box sx={{
-          p: 3,
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          p: SPACING[6],
+          borderBottom: `1px solid ${COLORS.border.separator}`,
         }}>
           <Typography
             variant="h4"
             component="h1"
             sx={{
-              fontFamily: '"Space Grotesk", sans-serif',
               fontWeight: 800,
               fontSize: '1.75rem',
               letterSpacing: '-0.03em',
-              color: '#FFFFFF',
-              mb: 0.5,
+              color: COLORS.text.primary,
+              mb: SPACING[1],
             }}
           >
             잭팟 STOCK
           </Typography>
           <Typography
             sx={{
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.65rem',
-              color: 'rgba(255,255,255,0.4)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
+              ...TEXT_LABEL_SM,
+              color: COLORS.text.tertiary,
             }}
           >
             Trading System
           </Typography>
         </Box>
 
-        <List sx={{ flex: 1, p: 2 }}>
+        <List sx={{ flex: 1, p: SPACING[4] }}>
           {navItems.map((item) => renderNavItem(item, includeOnClick))}
         </List>
 
         <Box sx={{
-          p: 2,
-          borderTop: '1px solid rgba(255,255,255,0.06)',
+          p: SPACING[4],
+          borderTop: `1px solid ${COLORS.border.separator}`,
         }}>
           {/* Market Status */}
-          <Box sx={{ mb: 2 }}>
-            <Typography
-              sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.6rem',
-                color: 'rgba(255,255,255,0.4)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                mb: 1,
-              }}
-            >
+          <Box sx={{ mb: SPACING[4] }}>
+            <Typography sx={{ ...TEXT_LABEL_SM, mb: SPACING[2] }}>
               Market Status
             </Typography>
             <Chip
@@ -248,39 +250,29 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               size="small"
               sx={{
                 width: '100%',
-                bgcolor: marketStatus === 'open' ? 'rgba(0,255,65,0.1)' : 'rgba(255,255,255,0.05)',
-                color: marketStatus === 'open' ? '#00FF41' : 'rgba(255,255,255,0.5)',
+                bgcolor: marketStatus === 'open' ? COLORS.success.bg : COLORS.background.secondary,
+                color: marketStatus === 'open' ? COLORS.success.main : COLORS.text.secondary,
                 border: '1px solid',
-                borderColor: marketStatus === 'open' ? 'rgba(0,255,65,0.3)' : 'rgba(255,255,255,0.1)',
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.65rem',
+                borderColor: marketStatus === 'open' ? COLORS.success.main : COLORS.border.default,
+                ...TEXT_BODY_SM,
                 fontWeight: 700,
                 height: 28,
-                borderRadius: '2px',
-                letterSpacing: '0.05em',
+                borderRadius: RADIUS.sm,
+                transition: TRANSITIONS.all,
               }}
             />
           </Box>
 
           {/* System Health */}
-          <Box sx={{ mb: 2 }}>
-            <Typography
-              sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.6rem',
-                color: 'rgba(255,255,255,0.4)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                mb: 1,
-              }}
-            >
+          <Box sx={{ mb: SPACING[4] }}>
+            <Typography sx={{ ...TEXT_LABEL_SM, mb: SPACING[2] }}>
               System Status
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: SPACING[2] }}>
               <CircleIcon
                 sx={{
                   fontSize: 6,
-                  color: '#00FF41',
+                  color: COLORS.success.main,
                   animation: 'pulse 2s infinite',
                   '@keyframes pulse': {
                     '0%, 100%': { opacity: 1 },
@@ -288,77 +280,38 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                   },
                 }}
               />
-              <Typography
-                sx={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: '0.65rem',
-                  color: 'rgba(255,255,255,0.5)',
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                }}
-              >
+              <Typography sx={{ ...TEXT_BODY_SM, color: COLORS.text.secondary }}>
                 System OK
               </Typography>
             </Box>
           </Box>
 
           {/* Current Time */}
-          <Box sx={{ mb: 2 }}>
-            <Typography
-              sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.6rem',
-                color: 'rgba(255,255,255,0.4)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                mb: 1,
-              }}
-            >
+          <Box sx={{ mb: SPACING[4] }}>
+            <Typography sx={{ ...TEXT_LABEL_SM, mb: SPACING[2] }}>
               Current Time
             </Typography>
-            <Typography
-              sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.75rem',
-                color: '#FFFFFF',
-                fontWeight: 600,
-              }}
-            >
+            <Typography sx={{ ...TEXT_BODY_SM, color: COLORS.text.primary, fontWeight: 600 }}>
               {mounted ? formatDateTime(currentTime) : '로딩 중...'}
             </Typography>
           </Box>
 
-          <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', mb: 2 }} />
+          <Divider sx={{ borderColor: COLORS.border.separator, mb: SPACING[4] }} />
 
           {/* Version Info */}
           <Box
             sx={{
-              p: 2,
-              borderRadius: '2px',
-              backgroundColor: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(255,255,255,0.06)',
+              p: SPACING[4],
+              borderRadius: RADIUS.sm,
+              backgroundColor: COLORS.background.secondary,
+              border: `1px solid ${COLORS.border.default}`,
               textAlign: 'center',
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.65rem',
-                color: 'rgba(255,255,255,0.4)',
-                fontWeight: 600,
-                letterSpacing: '0.05em',
-              }}
-            >
+            <Typography sx={{ ...TEXT_BODY_SM, color: COLORS.text.tertiary, fontWeight: 600 }}>
               {APP_VERSION}
             </Typography>
-            <Typography
-              sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.6rem',
-                color: 'rgba(255,255,255,0.3)',
-                mt: 0.5,
-              }}
-            >
+            <Typography sx={{ ...TEXT_CAPTION, color: COLORS.text.disabled, mt: SPACING[1] }}>
               {APP_COPYRIGHT}
             </Typography>
           </Box>
@@ -379,16 +332,17 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            backgroundColor: 'rgba(10,10,12,0.95)',
+            backgroundColor: COLORS.background.secondary,
             backdropFilter: 'blur(20px)',
-            borderRight: '1px solid rgba(255,255,255,0.06)',
+            borderRight: `1px solid ${COLORS.border.separator}`,
             transform: open ? 'translateX(0)' : `translateX(-${DRAWER_WIDTH}px)`,
-            transition: 'transform 0.3s ease-in-out',
+            transition: TRANSITIONS.transform,
             position: 'fixed',
             left: 0,
             top: 0,
             bottom: 0,
             zIndex: 1200,
+            boxShadow: SHADOWS.lg,
           },
         }}
       >
@@ -407,9 +361,10 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            backgroundColor: 'rgba(10,10,12,0.98)',
+            backgroundColor: COLORS.background.secondary,
             backdropFilter: 'blur(20px)',
-            borderRight: '1px solid rgba(255,255,255,0.06)',
+            borderRight: `1px solid ${COLORS.border.separator}`,
+            boxShadow: SHADOWS.xl,
           },
         }}
       >

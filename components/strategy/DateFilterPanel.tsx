@@ -8,7 +8,7 @@ import { GLASS_PAPER, TERMINAL_COLORS } from '@/lib/theme/styleConstants';
 
 export type DateFilterPreset = 'today' | 'week' | 'month' | 'custom';
 export type MonitoringFilter = 'all' | 'on' | 'off';
-export type OrderStatusFilter = 'all' | 'filled' | 'pending';
+export type OrderStatusFilter = 'all' | 'filled' | 'pending' | 'scheduled';
 
 interface DateFilterPanelProps {
   preset: DateFilterPreset;
@@ -295,8 +295,9 @@ export function DateFilterPanel({
               }}
             >
               <ToggleButton value="all">전체</ToggleButton>
-              <ToggleButton value="filled">주문됨</ToggleButton>
-              <ToggleButton value="pending">대기</ToggleButton>
+              <ToggleButton value="filled">체결완료</ToggleButton>
+              <ToggleButton value="pending">미체결</ToggleButton>
+              <ToggleButton value="scheduled">예약중</ToggleButton>
             </ToggleButtonGroup>
           </Stack>
 
