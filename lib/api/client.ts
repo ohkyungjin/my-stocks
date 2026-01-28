@@ -3,7 +3,30 @@
  * Provides typed fetch wrapper with error handling
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8008';
+const getApiBaseUrl = (): string => {
+  // 환경변수에서 API URL 가져오기
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  // 환경변수가 설정되어 있으면 사용
+  if (envUrl && envUrl.trim()) {
+    return envUrl.trim();
+  }
+
+  // 개발 환경: localhost 사용
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:8008';
+  }
+
+  // 프로덕션 환경: 에러 방지를 위해 상대 경로 또는 현재 도메인 사용
+  // Cloudflare Pages에서는 반드시 NEXT_PUBLIC_API_URL을 설정해야 함
+  if (typeof window !== 'undefined') {
+    console.error('⚠️ NEXT_PUBLIC_API_URL이 설정되지 않았습니다. Cloudflare Pages 환경변수를 확인하세요.');
+  }
+
+  return '';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export class ApiError extends Error {
   constructor(
@@ -57,6 +80,15 @@ class ApiClient {
    * Build URL with query parameters
    */
   private buildURL(endpoint: string, params?: Record<string, any>): string {
+    // baseURL이 비어있는 경우 에러 발생
+    if (!this.baseURL) {
+      throw new Error(
+        'API Base URL이 설정되지 않았습니다. ' +
+        'Cloudflare Pages 환경변수에서 NEXT_PUBLIC_API_URL을 설정하세요. ' +
+        '예: https://your-api-domain.com'
+      );
+    }
+
     const url = new URL(endpoint, this.baseURL);
 
     if (params) {
