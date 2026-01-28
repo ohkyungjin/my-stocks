@@ -178,7 +178,7 @@ export default function FinFlowLivePage() {
               sx={{
                 bgcolor: COLORS.background.secondary,
                 borderRadius: `${RADIUS.md}px`,
-                p: SPACING[2.5],
+                p: 2,
                 border: `1px solid ${COLORS.border.default}`,
               }}
             >
@@ -215,7 +215,7 @@ export default function FinFlowLivePage() {
               sx={{
                 bgcolor: COLORS.background.secondary,
                 borderRadius: `${RADIUS.md}px`,
-                p: SPACING[2.5],
+                p: 2,
                 border: `1px solid ${COLORS.border.default}`,
               }}
             >
@@ -253,7 +253,7 @@ export default function FinFlowLivePage() {
               sx={{
                 bgcolor: COLORS.background.secondary,
                 borderRadius: `${RADIUS.md}px`,
-                p: SPACING[2.5],
+                p: 2,
                 border: `1px solid ${COLORS.border.default}`,
               }}
             >
